@@ -1,0 +1,67 @@
+@model List<proyecto.Models.Propietario> 
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Propietarios</h1>
+
+<p>
+    <a asp-action="Create">Crear Nuevo Propietario</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>IdPropietario</h3>
+            </th>
+            <th>
+                <h3>Nombre</h3>
+            </th>
+            <th>
+                <h3>Apellido</h3>
+            </th>
+            <th>
+                <h3>Dni</h3>
+            </th>
+            <th>
+                <h3>Telefono</h3>
+            </th>
+            <th>
+                <h3>Email</h3>
+            </th>
+            <th>
+                <h3>Opciones</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPropietario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellido)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Dni)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=item.IdPropietario  }) |
+                @Html.ActionLink("Detalles", "Details", new { id=item.IdPropietario }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.IdPropietario })
+            </td>
+        </tr>
+}
+    </tbody>
+    </tbody>
+</table>

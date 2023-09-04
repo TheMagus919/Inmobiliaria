@@ -1,0 +1,61 @@
+@model List<proyecto.Models.Contrato> 
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Contratos</h1>
+
+<p>
+    <a asp-action="Create">Crear Nuevo Contrato</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>IdContrato</h3>
+            </th>
+            <th>
+                <h3>IdInmueble</h3>
+            </th>
+            <th>
+                <h3>Nombre del Inquilino</h3>
+            </th>
+            <th>
+                <h3>FechaDesde</h3>
+            </th>
+            <th>
+                <h3>FechaHasta</h3>
+            </th>
+            <th>
+                <h3>Opciones</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@for(var i=0;i<ViewBag.Contador;i++) {
+        <tr>
+            <td>
+                @Model[i].IdContrato
+            </td>
+            <td>
+                @Model[i].IdInmueble
+            </td>
+            <td>
+                @ViewBag.Nombres[i]
+            </td>
+            <td>
+                @Model[i].FechaDesde
+            </td>
+            <td>
+                @Model[i].FechaHasta
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=Model[i].IdContrato }) |
+                @Html.ActionLink("Detalles", "Details", new { id=Model[i].IdContrato }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id=Model[i].IdContrato })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

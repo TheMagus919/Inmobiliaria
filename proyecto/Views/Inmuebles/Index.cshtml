@@ -1,0 +1,94 @@
+@model List<proyecto.Models.Inmueble>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Inmueble</h1>
+
+<p>
+    <a asp-action="Create">Crear Nuevo Inmueble</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>IdInmueble</h3>
+            </th>
+            <th>
+                <h3>Nombre del Propietario</h3>
+            </th>
+            <th>
+                <h3>CantidadDeAmbientes</h3>
+            </th>
+            <th>
+                <h3>Uso</h3>
+            </th>
+            <th>
+                <h3>Direccion</h3>
+            </th>
+            <th>
+                <h3>Tipo</h3>
+            </th>
+            <th>
+                <h3>Longitud</h3>
+            </th>
+            <th>
+                <h3>Latitud</h3>
+            </th>
+            <th>
+                <h3>Precio</h3>
+            </th>
+            <th>
+                <h3>Disponible</h3>
+            </th>
+            <th>
+                <h3>Opciones</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@for(var i=0;i<ViewBag.Contador;i++){
+        <tr>
+            <td>
+                @Model[i].IdInmueble
+            </td>
+            <td>
+                @ViewBag.Nombree[i]               
+            </td>                    
+            <td>
+                @Model[i].CantidadDeAmbientes
+            </td>
+            <td>
+                @Model[i].Uso
+            </td>
+            <td>
+                @Model[i].Direccion
+            </td>
+            <td>
+                @Model[i].Tipo
+            </td>
+            <td>
+                @Model[i].Longitud
+            </td>
+            <td>
+                @Model[i].Latitud
+            </td>
+            <td>
+                @Model[i].Precio
+            </td>
+            <td>
+                @if (Model[i].Disponible.ToString() == "True") {
+                    <p>True</p>
+                    }else{
+                        <p>False</p>
+                    }
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new { id=Model[i].IdInmueble}) |
+                @Html.ActionLink("Detalles", "Details", new { id=Model[i].IdInmueble }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id=Model[i].IdInmueble })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
