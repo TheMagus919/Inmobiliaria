@@ -55,6 +55,16 @@ namespace proyecto.Controllers
             {   
                 if (ModelState.IsValid){
                     RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
+                    List<Inquilino> rep = repositorioInquilino.ObtenerTodos();
+                    foreach(var asd in rep){
+                        if(asd.Dni == inquilino.Dni){
+                            ModelState.AddModelError("", "El DNI ya esta en uso");
+                            return View(inquilino);
+                        }else if(asd.Email == inquilino.Email){
+                            ModelState.AddModelError("", "El Email ya esta en uso");
+                            return View(inquilino);
+                        }
+                    }
                     repositorioInquilino.Alta(inquilino);
                     TempData["Id"] = inquilino.IdInquilino;
                     return RedirectToAction(nameof(Index));
@@ -93,6 +103,16 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
+                List<Inquilino> rep = repositorioInquilino.ObtenerTodos();
+                    foreach(var asd in rep){
+                        if(asd.Dni == inquilino.Dni && asd.IdInquilino != inquilino.IdInquilino){
+                            ModelState.AddModelError("", "El DNI ya esta en uso");
+                            return View(inquilino);
+                        }else if(asd.Email == inquilino.Email && asd.IdInquilino != inquilino.IdInquilino){
+                            ModelState.AddModelError("", "El Email ya esta en uso");
+                            return View(inquilino);
+                        }
+                    }
                 repositorioInquilino.Modificacion(inquilino);
                 return RedirectToAction(nameof(Index));
 
@@ -123,12 +143,12 @@ namespace proyecto.Controllers
         // POST: Inquilinos/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Inquilino inquilino)
+        public ActionResult Delete(int id, Inquilino inquilino)
         {
             try
             {
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
-                repositorioInquilino.Baja(inquilino.IdInquilino);
+                repositorioInquilino.Baja(id);
                 return RedirectToAction(nameof(Index));
 
             }

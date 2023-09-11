@@ -80,8 +80,8 @@ public class RepositorioContrato
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT 
-					IdContrato, IdInmueble, IdInquilino, FechaDesde, FechaHasta
-					FROM Contratos";
+					IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, inq.Nombre, inq.Apellido, inm.IdPropietario
+					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -96,6 +96,13 @@ public class RepositorioContrato
                             IdInquilino = reader.GetInt32("IdInquilino"),
                             FechaDesde = reader.GetDateTime("FechaDesde"),
                             FechaHasta = reader.GetDateTime("FechaHasta"),
+							Vive = new Inquilino{
+								Nombre = reader.GetString("Nombre"),
+								Apellido = reader.GetString("Apellido"),
+							},
+							Lugar = new Inmueble{
+								IdPropietario = reader.GetInt32("IdPropietario"),
+							},
 						};
 						res.Add(c);
 					}
@@ -143,8 +150,8 @@ public class RepositorioContrato
 			Contrato c = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdContrato, IdInmueble, IdInquilino, FechaDesde, FechaHasta
-					FROM Contratos
+				string sql = @"SELECT IdContrato, IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, inq.Nombre, inq.Apellido
+					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino
 					WHERE IdContrato=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -161,6 +168,10 @@ public class RepositorioContrato
                             IdInquilino = reader.GetInt32("IdInquilino"),
                             FechaDesde = reader.GetDateTime("FechaDesde"),
                             FechaHasta = reader.GetDateTime("FechaHasta"),
+							Vive = new Inquilino{
+								Nombre = reader.GetString("Nombre"),
+								Apellido = reader.GetString("Apellido"),
+							}
 						};
 					}
 					connection.Close();

@@ -1,0 +1,59 @@
+@model List<proyecto.Models.Pago>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Pagos</h1>
+
+<p>
+    <a asp-action="Create">Crear Nuevo Pago</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <p>IdPago</p>
+            </th>
+            <th>
+                <p>Numero De Pago</p>
+            </th>
+            <th>
+                <p>Fecha De Pago</p>
+            </th>
+            <th>
+                <p>Contrato</p>
+            </th>
+            <th>
+                <p>Importe</p>
+            </th>
+            <th><p>Opciones</p></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroDePago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaDePago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdContrato)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Importe)
+            </td>
+            <td>
+                @Html.ActionLink("Editar", "Edit", new {  id=item.IdPago }) |
+                @Html.ActionLink("Detalles", "Details", new {  id=item.IdPago }) |
+                @Html.ActionLink("Eliminar", "Delete", new {  id=item.IdPago })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -16,22 +16,11 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
-                RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                 List<Inmueble> inmuebles = repositorioInmueble.ObtenerTodos();
-                var nombress = new List<string>();
-                int contador=0;
-                foreach(Inmueble nombre in inmuebles){
-                    int id = nombre.IdPropietario;
-                    Propietario propietarios=repositorioPropietario.ObtenerPorId(id);
-                    nombress.Add(propietarios.Nombre.ToString());
-                    contador++;
-                }
                 ViewBag.Id = TempData["Id"];
                 if(TempData.ContainsKey("Mensaje")){
                     ViewBag.Mensaje = TempData["Mensaje"];
                 }
-                ViewBag.Contador = contador;
-                ViewBag.Nombree = nombress;
                 return View(inmuebles);
             }
             catch(System.Exception)
@@ -46,11 +35,7 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
-                RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                 Inmueble inmuebles = repositorioInmueble.ObtenerPorId(id);
-                Propietario propietario=repositorioPropietario.ObtenerPorId(inmuebles.IdPropietario);
-                var nombre = propietario.Nombre;
-                ViewBag.Nombre = nombre;
                 return View(inmuebles);
             }
             catch(System.Exception)
@@ -61,8 +46,13 @@ namespace proyecto.Controllers
 
         // GET: Inmuebles/Create
         public ActionResult Create()
-        {
+        {   try{
+            RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+            ViewBag.Propietarios = repositorioPropietario.ObtenerTodos();
             return View();
+        }catch(Exception ex){
+            throw;
+        }           
         }
 
         // POST: Inmuebles/Create
@@ -82,7 +72,7 @@ namespace proyecto.Controllers
                 }
                 
             }
-            catch(System.Exception)
+            catch(Exception ex)
             {
                 throw;
             }
@@ -94,7 +84,9 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
+                RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                 Inmueble inmuebles = repositorioInmueble.ObtenerPorId(id);
+                ViewBag.Propietarios = repositorioPropietario.ObtenerTodos();
                 return View(inmuebles);
             }
             catch(System.Exception)
@@ -143,7 +135,7 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
-                repositorioInmueble.Baja(inmueble.IdInmueble);
+                repositorioInmueble.Baja(id);
                 return RedirectToAction(nameof(Index));
             }
             catch(System.Exception)

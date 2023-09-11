@@ -18,6 +18,13 @@ public class Contrato{
     public DateTime FechaDesde { get; set;}
     [Required]
     public DateTime FechaHasta { get; set;}
+    [ForeignKey(nameof(IdInquilino))]
+    public Inquilino? Vive { get; set;}
+    public Inmueble? Lugar { get; set;}
 
+    public override string ToString()
+        {
+            return $"{IdContrato} - {Vive} - {Lugar}";
+        }
 }
 }

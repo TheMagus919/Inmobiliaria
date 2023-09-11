@@ -20,7 +20,7 @@
             <p>Nombre del Propietario</p>
         </dt>
         <dd class = "col-sm-10">
-            <p>@ViewBag.Nombre</p>
+            @(Model.Duenio.Nombre + " " + Model.Duenio.Apellido)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.CantidadDeAmbientes)

@@ -61,9 +61,19 @@ namespace proyecto.Controllers
             {   
                 if(ModelState.IsValid){
                     RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
-                repositorioPropietario.Alta(propietario);
-                TempData["Id"] = propietario.IdPropietario;
-                return RedirectToAction(nameof(Index));
+                    List<Propietario> rep = repositorioPropietario.ObtenerTodos();
+                    foreach(var asd in rep){
+                        if(asd.Dni == propietario.Dni){
+                            ModelState.AddModelError("", "El DNI ya esta en uso");
+                            return View(propietario);
+                        }else if(asd.Email == propietario.Email){
+                            ModelState.AddModelError("", "El Email ya esta en uso");
+                            return View(propietario);
+                        }
+                    }
+                    repositorioPropietario.Alta(propietario);
+                    TempData["Id"] = propietario.IdPropietario;
+                    return RedirectToAction(nameof(Index));
                 }else{
                     return View(propietario);
                 }
@@ -98,6 +108,16 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+                List<Propietario> rep = repositorioPropietario.ObtenerTodos();
+                    foreach(var asd in rep){
+                        if(asd.Dni == propietario.Dni && asd.IdPropietario != propietario.IdPropietario){
+                            ModelState.AddModelError("", "El DNI ya esta en uso");
+                            return View(propietario);
+                        }else if(asd.Email == propietario.Email && asd.IdPropietario != propietario.IdPropietario){
+                            ModelState.AddModelError("", "El Email ya esta en uso");
+                            return View(propietario);
+                        }
+                    }
                 repositorioPropietario.Modificacion(propietario);
                 return RedirectToAction(nameof(Index));
             }
@@ -131,7 +151,7 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
-                repositorioPropietario.Baja(propietario.IdPropietario);
+                repositorioPropietario.Baja(id);
                 return RedirectToAction(nameof(Index));
             }
             catch(System.Exception)

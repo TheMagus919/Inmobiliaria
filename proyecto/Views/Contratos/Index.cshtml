@@ -33,29 +33,29 @@
         </tr>
     </thead>
     <tbody>
-@for(var i=0;i<ViewBag.Contador;i++) {
-        <tr>
+        @foreach (var item in Model) {
+            <tr>
             <td>
-                @Model[i].IdContrato
+                @Html.DisplayFor(modelItem => item.IdContrato)
             </td>
             <td>
-                @Model[i].IdInmueble
+                @Html.DisplayFor(modelItem => item.IdInmueble)             
+            </td>                    
+            <td>
+                @(item.Vive.Nombre + " " + item.Vive.Apellido) 
             </td>
             <td>
-                @ViewBag.Nombres[i]
+                @Html.DisplayFor(modelItem => item.FechaDesde)
             </td>
             <td>
-                @Model[i].FechaDesde
+                @Html.DisplayFor(modelItem => item.FechaHasta)
             </td>
             <td>
-                @Model[i].FechaHasta
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id=Model[i].IdContrato }) |
-                @Html.ActionLink("Detalles", "Details", new { id=Model[i].IdContrato }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id=Model[i].IdContrato })
+                @Html.ActionLink("Editar", "Edit", new { id=item.IdContrato }) |
+                @Html.ActionLink("Detalles", "Details", new { id=item.IdContrato }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id=item.IdContrato })
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

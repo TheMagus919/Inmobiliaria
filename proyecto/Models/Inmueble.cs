@@ -25,6 +25,12 @@ public class Inmueble{
     public decimal Precio { get; set;}
     [Required]
     public bool Disponible { get; set;}
+    [ForeignKey(nameof(IdPropietario))]
+    public Propietario? Duenio { get; set;}
 
+    public override string ToString()
+        {
+            return $"{IdPropietario}";
+        }
 }
 }

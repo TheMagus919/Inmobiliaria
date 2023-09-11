@@ -39,7 +39,7 @@ public class RepositorioPropietario
 			int res = -1;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = "DELETE FROM Propietarios WHERE IdPropietario = @id";
+				string sql = "DELETE FROM propietarios WHERE IdPropietario = @id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -56,7 +56,7 @@ public class RepositorioPropietario
 			int res = -1;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"UPDATE Propietarios 
+				string sql = @"UPDATE propietarios 
 					SET Nombre=@nombre, Apellido=@apellido, Dni=@dni, Telefono=@telefono, Email=@email
 					WHERE IdPropietario = @id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
@@ -115,7 +115,7 @@ public class RepositorioPropietario
 			{
 				string sql = @$"
 					SELECT IdPropietario, Nombre, Apellido, Dni, Telefono, Email
-					FROM Propietarios
+					FROM propietarios
 					LIMIT {tamPagina} OFFSET {(paginaNro - 1) * tamPagina}
 				";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
@@ -148,7 +148,7 @@ public class RepositorioPropietario
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT IdPropietario, Nombre, Apellido, Dni, Telefono, Email
-					FROM Propietarios
+					FROM propietarios
 					WHERE IdPropietario=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -180,7 +180,7 @@ public class RepositorioPropietario
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT IdPropietario, Nombre, Apellido, Dni, Telefono, Email 
-					FROM Propietarios
+					FROM propietarios
 					WHERE Email=@email";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -214,7 +214,7 @@ public class RepositorioPropietario
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT IdPropietario, Nombre, Apellido, Dni, Telefono, Email
-					FROM Propietarios
+					FROM propietarios
 					WHERE Nombre LIKE @nombre OR Apellido LIKE @nombre";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{

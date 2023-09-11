@@ -16,19 +16,8 @@ namespace proyecto.Controllers
             try
             {   
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
-                RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
-                List<Contrato> contratos = repositorioContrato.ObtenerLista();               
-                var nombres = new List<string>();
-                int contador = 0;
-                foreach(Contrato nombre in contratos){
-                    int id = nombre.IdInquilino;
-                    Inquilino inquilinos=repositorioInquilino.ObtenerPorId(id);
-                    nombres.Add(inquilinos.Nombre.ToString());
-                    contador++;
-                }
-                ViewBag.Nombres = nombres;
+                List<Contrato> contratos = repositorioContrato.ObtenerTodos();
                 ViewBag.Id = TempData["Id"];
-                ViewBag.Contador =  contador;
                 if(TempData.ContainsKey("Mensaje")){
                     ViewBag.Mensaje = TempData["Mensaje"];
                 }
@@ -46,11 +35,7 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
-                RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
                 Contrato contrato = repositorioContrato.ObtenerPorId(id);
-                Inquilino inquilino = repositorioInquilino.ObtenerPorId(contrato.IdInquilino);
-                var nombre = inquilino.Nombre;
-                ViewBag.Nombre = nombre;
                 return View(contrato);
             }
             catch(System.Exception)
@@ -62,7 +47,16 @@ namespace proyecto.Controllers
         // GET: Contratos/Create
         public ActionResult Create()
         {
-            return View();
+            try{
+                RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
+                RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
+                ViewBag.Inmuebles = repositorioInmueble.ObtenerTodos();
+                ViewBag.Inquilinos = repositorioInquilino.ObtenerTodos();
+                return View();
+            }catch(Exception ex){
+                throw;
+            }
+            
         }
 
         // POST: Contratos/Create
@@ -94,7 +88,11 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
+                RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
+                RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
                 Contrato contrato = repositorioContrato.ObtenerPorId(id);
+                ViewBag.Inmuebles = repositorioInmueble.ObtenerTodos();
+                ViewBag.Inquilinos = repositorioInquilino.ObtenerTodos();
                 return View(contrato);
             }
             catch(System.Exception)
@@ -143,7 +141,7 @@ namespace proyecto.Controllers
             try
             {
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
-                repositorioContrato.Baja(contrato.IdContrato);
+                repositorioContrato.Baja(id);
                 return RedirectToAction(nameof(Index));
             }
             catch(System.Exception)

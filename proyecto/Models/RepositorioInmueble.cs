@@ -90,8 +90,8 @@ public class RepositorioInmueble
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT 
-					IdInmueble, IdPropietario, CantidadDeAmbientes, Uso, Direccion, Tipo, Latitud, Longitud, Precio, Disponible
-					FROM inmuebles";
+					IdInmueble, i.IdPropietario, CantidadDeAmbientes, Uso, Direccion, Tipo, Latitud, Longitud, Precio, Disponible, p.Nombre, p.Apellido
+					FROM inmuebles i INNER JOIN propietarios p ON i.IdPropietario = p.IdPropietario";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -111,6 +111,10 @@ public class RepositorioInmueble
                             Longitud = reader.GetDecimal("Longitud"),
                             Precio = reader.GetDecimal("Precio"),
                             Disponible = reader.GetBoolean("Disponible"),
+							Duenio = new Propietario{
+								Nombre = reader.GetString("Nombre"),
+								Apellido = reader.GetString("Apellido"),
+							}
 						};
 						res.Add(i);
 					}
@@ -163,8 +167,8 @@ public class RepositorioInmueble
 			Inmueble i = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdInmueble, IdPropietario, CantidadDeAmbientes, Uso, Direccion, Tipo, Latitud, Longitud, Precio, Disponible
-					FROM Inmuebles
+				string sql = @"SELECT IdInmueble, i.IdPropietario, CantidadDeAmbientes, Uso, Direccion, Tipo, Latitud, Longitud, Precio, Disponible, p.Nombre, p.Apellido
+					FROM inmuebles i INNER JOIN propietarios p ON i.IdPropietario = p.IdPropietario
 					WHERE IdInmueble=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -186,6 +190,10 @@ public class RepositorioInmueble
                             Longitud = reader.GetDecimal("Longitud"),
                             Precio = reader.GetDecimal("Precio"),
                             Disponible = reader.GetBoolean("Disponible"),
+							Duenio = new Propietario{
+								Nombre = reader.GetString("Nombre"),
+								Apellido = reader.GetString("Apellido"),
+							},
 						};
 					}
 					connection.Close();

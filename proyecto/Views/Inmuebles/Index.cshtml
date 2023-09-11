@@ -47,48 +47,48 @@
         </tr>
     </thead>
     <tbody>
-@for(var i=0;i<ViewBag.Contador;i++){
-        <tr>
+        @foreach (var item in Model) {
+            <tr>
             <td>
-                @Model[i].IdInmueble
+                @Html.DisplayFor(modelItem => item.IdInmueble)
             </td>
             <td>
-                @ViewBag.Nombree[i]               
+                @(item.Duenio.Nombre + " " + item.Duenio.Apellido)              
             </td>                    
             <td>
-                @Model[i].CantidadDeAmbientes
+                @Html.DisplayFor(modelItem => item.CantidadDeAmbientes)
             </td>
             <td>
-                @Model[i].Uso
+                @Html.DisplayFor(modelItem => item.Uso)
             </td>
             <td>
-                @Model[i].Direccion
+                @Html.DisplayFor(modelItem => item.Direccion)
             </td>
             <td>
-                @Model[i].Tipo
+                @Html.DisplayFor(modelItem => item.Tipo)
             </td>
             <td>
-                @Model[i].Longitud
+                @Html.DisplayFor(modelItem => item.Longitud)
             </td>
             <td>
-                @Model[i].Latitud
+                @Html.DisplayFor(modelItem => item.Latitud)
             </td>
             <td>
-                @Model[i].Precio
+                @Html.DisplayFor(modelItem => item.Precio)
             </td>
             <td>
-                @if (Model[i].Disponible.ToString() == "True") {
+                @if (item.Disponible.ToString() == "True") {
                     <p>True</p>
                     }else{
                         <p>False</p>
                     }
             </td>
             <td>
-                @Html.ActionLink("Editar", "Edit", new { id=Model[i].IdInmueble}) |
-                @Html.ActionLink("Detalles", "Details", new { id=Model[i].IdInmueble }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id=Model[i].IdInmueble })
+                @Html.ActionLink("Editar", "Edit", new { id= item.IdInmueble}) |
+                @Html.ActionLink("Detalles", "Details", new { id= item.IdInmueble }) |
+                @Html.ActionLink("Eliminar", "Delete", new { id= item.IdInmueble })
             </td>
         </tr>
-}
+        }
     </tbody>
 </table>

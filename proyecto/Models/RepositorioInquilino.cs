@@ -39,9 +39,9 @@ public class RepositorioInquilino
 			int res = -1;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = "DELETE FROM Inquilinos WHERE IdInquilino = @id";
+				string sql = "DELETE FROM inquilinos WHERE IdInquilino = @id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
-				{
+				{	
 					command.CommandType = CommandType.Text;
 					command.Parameters.AddWithValue("@id", id);
 					connection.Open();
@@ -56,7 +56,7 @@ public class RepositorioInquilino
 			int res = -1;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"UPDATE Inquilinos 
+				string sql = @"UPDATE inquilinos 
 					SET Nombre=@nombre, Apellido=@apellido, Dni=@dni, Telefono=@telefono, Email=@email
 					WHERE IdInquilino = @id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
@@ -115,7 +115,7 @@ public class RepositorioInquilino
 			{
 				string sql = @$"
 					SELECT IdInquilino, Nombre, Apellido, Dni, Telefono, Email
-					FROM Inquilinos
+					FROM inquilinos
 					LIMIT {tamPagina} OFFSET {(paginaNro - 1) * tamPagina}
 				";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
@@ -148,7 +148,7 @@ public class RepositorioInquilino
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT IdInquilino, Nombre, Apellido, Dni, Telefono, Email
-					FROM Inquilinos
+					FROM inquilinos
 					WHERE IdInquilino=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -180,7 +180,7 @@ public class RepositorioInquilino
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT IdInquilino, Nombre, Apellido, Dni, Telefono, Email 
-					FROM Inquilinos
+					FROM inquilinos
 					WHERE Email=@email";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -214,7 +214,7 @@ public class RepositorioInquilino
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT IdInquilino, Nombre, Apellido, Dni, Telefono, Email
-					FROM Inquilinos
+					FROM inquilinos
 					WHERE Nombre LIKE @nombre OR Apellido LIKE @nombre";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
