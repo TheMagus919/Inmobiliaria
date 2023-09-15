@@ -32,16 +32,16 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Pagos" asp-action="Index"><img width="18" height="18" src="https://img.icons8.com/dotty/80/money.png" alt="money"/> Pagos</a>
                         </li>
+                        @if (User.IsInRole("administrador"))
+                            {   <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-controller="Usuarios" asp-action="Index"><span class="lnr lnr-users"></span> Usuarios</a>
+                                </li>
+                            }
 					    </ul>
                 </div>
                 @if(!User.Identity.IsAuthenticated){
                     <a class="navbar-brand float-right" href='/Usuarios/Login'><span class="lnr lnr-enter"></span>Loguearse</a>
                 }else{
-                
-                @if (User.IsInRole("administrador"))
-					{
-						<a class="py-2 d-none d-md-inline-block" asp-controller="Usuarios" asp-action="Index"><span class="lnr lnr-users"></span> Usuarios</a>
-					}
 					<div class="dropdown">
 						<a class="btn btn-primary dropdown-toggle text-light" role="button" id="userMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent" data-display="static">
 							<span class="lnr lnr-user"></span> @User.Identity.Name
