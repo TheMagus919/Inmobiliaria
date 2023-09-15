@@ -13,21 +13,17 @@
     <thead>
         <tr>
             <th>
-                <p>IdPago</p>
+                <h3>Id Pago</h3>
             </th>
             <th>
-                <p>Numero De Pago</p>
+                <h3>Numero De Pago</h3>
             </th>
             <th>
-                <p>Fecha De Pago</p>
+                <h3>Contrato a Nombre de</h3>
             </th>
             <th>
-                <p>Contrato</p>
+                <h3>Opciones</h3>
             </th>
-            <th>
-                <p>Importe</p>
-            </th>
-            <th><p>Opciones</p></th>
         </tr>
     </thead>
     <tbody>
@@ -40,19 +36,21 @@
                 @Html.DisplayFor(modelItem => item.NumeroDePago)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaDePago)
+                @(item.contrato.Vive.Nombre + " " + item.contrato.Vive.Apellido)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdContrato)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Importe)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new {  id=item.IdPago }) |
-                @Html.ActionLink("Detalles", "Details", new {  id=item.IdPago }) |
-                @Html.ActionLink("Eliminar", "Delete", new {  id=item.IdPago })
-            </td>
+            @if(User.IsInRole("administrador")){
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new {  id=item.IdPago }) |
+                    @Html.ActionLink("Detalles", "Details", new {  id=item.IdPago }) |
+                    @Html.ActionLink("Eliminar", "Delete", new {  id=item.IdPago })
+                </td>
+            }else{
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new {  id=item.IdPago }) |
+                    @Html.ActionLink("Detalles", "Details", new {  id=item.IdPago })
+                </td>
+            }
+            
         </tr>
 }
     </tbody>

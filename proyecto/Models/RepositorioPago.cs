@@ -80,8 +80,8 @@ public class RepositorioPago
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT 
-					IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble
-					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato";
+					IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inq.Nombre, inq.Apellido
+					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -100,6 +100,10 @@ public class RepositorioPago
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),
+								Vive = new Inquilino{
+									Nombre = reader.GetString("Nombre"),
+									Apellido = reader.GetString("Apellido"),
+								}
 							}
 						};
 						res.Add(p);
@@ -153,8 +157,8 @@ public class RepositorioPago
 			Pago p = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble
-					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato
+				string sql = @"SELECT IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inq.Nombre, inq.Apellido
+					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino
 					WHERE IdPago=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -175,6 +179,10 @@ public class RepositorioPago
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),
+								Vive = new Inquilino{
+									Nombre = reader.GetString("Nombre"),
+									Apellido = reader.GetString("Apellido"),
+								}
 							}
 						};
 					}

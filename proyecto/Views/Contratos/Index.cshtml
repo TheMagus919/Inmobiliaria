@@ -13,19 +13,13 @@
     <thead>
         <tr>
             <th>
-                <h3>IdContrato</h3>
+                <h3>Id Contrato</h3>
             </th>
             <th>
-                <h3>IdInmueble</h3>
+                <h3>Nombre del Propietario del Inmueble</h3>
             </th>
             <th>
                 <h3>Nombre del Inquilino</h3>
-            </th>
-            <th>
-                <h3>FechaDesde</h3>
-            </th>
-            <th>
-                <h3>FechaHasta</h3>
             </th>
             <th>
                 <h3>Opciones</h3>
@@ -39,22 +33,23 @@
                 @Html.DisplayFor(modelItem => item.IdContrato)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdInmueble)             
+                @(item.Lugar.Duenio.Nombre + " " + item.Lugar.Duenio.Apellido)           
             </td>                    
             <td>
                 @(item.Vive.Nombre + " " + item.Vive.Apellido) 
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaDesde)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaHasta)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id=item.IdContrato }) |
-                @Html.ActionLink("Detalles", "Details", new { id=item.IdContrato }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id=item.IdContrato })
-            </td>
+                @if(User.IsInRole("administrador")){
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", new { id=item.IdContrato }) |
+                        @Html.ActionLink("Detalles", "Details", new { id=item.IdContrato }) |
+                        @Html.ActionLink("Eliminar", "Delete", new { id=item.IdContrato })
+                    </td>
+                }else{
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", new { id=item.IdContrato }) |
+                        @Html.ActionLink("Detalles", "Details", new { id=item.IdContrato })
+                    </td>
+                }
         </tr>
         }
     </tbody>

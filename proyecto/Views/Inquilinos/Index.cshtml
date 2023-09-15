@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Inquilino</h1>
+<h1>Inquilinos</h1>
 
 <p>
     <a asp-action="Create">Crear Nuevo Inquilino</a>
@@ -13,22 +13,13 @@
     <thead>
         <tr>
             <th>
-                <h3>IdInquilino</h3>
+                <h3>Id Inquilino</h3>
             </th>
             <th>
                 <h3>Nombre</h3>
             </th>
             <th>
                 <h3>Apellido</h3>
-            </th>
-            <th>
-                <h3>Dni</h3>
-            </th>
-            <th>
-                <h3>Telefono</h3>
-            </th>
-            <th>
-                <h3>Email</h3>
             </th>
             <th>
                 <h3>Opciones</h3>
@@ -47,20 +38,18 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Apellido)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dni)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id=item.IdInquilino }) |
-                @Html.ActionLink("Detalles", "Details", new { id=item.IdInquilino }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id=item.IdInquilino })
-            </td>
+            @if(User.IsInRole("administrador")){
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id=item.IdInquilino }) |
+                    @Html.ActionLink("Detalles", "Details", new { id=item.IdInquilino }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id=item.IdInquilino })
+                </td>
+            }else{
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id=item.IdInquilino }) |
+                    @Html.ActionLink("Detalles", "Details", new { id=item.IdInquilino })
+                </td>
+            }
         </tr>
 }
     </tbody>

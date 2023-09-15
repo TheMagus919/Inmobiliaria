@@ -12,7 +12,7 @@ namespace proyecto.Controllers
     {
         // GET: Pagos
         public ActionResult Index()
-        {
+        {   
             RepositorioPago repositorioPago = new RepositorioPago();
             List<Pago> pagos= repositorioPago.ObtenerTodos();
             return View(pagos);

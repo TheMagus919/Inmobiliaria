@@ -12,22 +12,13 @@
     <thead>
         <tr>
             <th>
-                <h3>IdPropietario</h3>
+                <h3>Id Propietario</h3>
             </th>
             <th>
                 <h3>Nombre</h3>
             </th>
             <th>
                 <h3>Apellido</h3>
-            </th>
-            <th>
-                <h3>Dni</h3>
-            </th>
-            <th>
-                <h3>Telefono</h3>
-            </th>
-            <th>
-                <h3>Email</h3>
             </th>
             <th>
                 <h3>Opciones</h3>
@@ -46,20 +37,19 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Apellido)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dni)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id=item.IdPropietario  }) |
-                @Html.ActionLink("Detalles", "Details", new { id=item.IdPropietario }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id=item.IdPropietario })
-            </td>
+            @if(User.IsInRole("administrador")){
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id=item.IdPropietario  }) |
+                    @Html.ActionLink("Detalles", "Details", new { id=item.IdPropietario }) |
+                    @Html.ActionLink("Eliminar", "Delete", new { id=item.IdPropietario })
+                </td>
+            }else{
+                <td>
+                    @Html.ActionLink("Editar", "Edit", new { id=item.IdPropietario  }) |
+                    @Html.ActionLink("Detalles", "Details", new { id=item.IdPropietario })
+                </td>
+            }
+            
         </tr>
 }
     </tbody>

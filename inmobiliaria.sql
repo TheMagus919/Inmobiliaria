@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 11-09-2023 a las 23:31:25
+-- Tiempo de generación: 15-09-2023 a las 21:20:26
 -- Versión del servidor: 10.4.21-MariaDB
 -- Versión de PHP: 8.0.11
 
@@ -135,8 +135,33 @@ CREATE TABLE `propietarios` (
 
 INSERT INTO `propietarios` (`idPropietario`, `nombre`, `apellido`, `dni`, `telefono`, `email`) VALUES
 (1, 'Jorge Agustin', 'Barroso', '42278146', '02665258343', 'agustinbarroso919@gmail.com'),
-(2, 'Mario', 'Cruift', '23421456', '2222222222', 'marioc@gmail.com'),
+(2, 'Pedro', 'Cruift', '23421456', '2222222222', 'marioc@gmail.com'),
 (8, 'Alex', 'Lionel', '29452784', '2664645323', 'alex@gmail.com');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `usuarios`
+--
+
+CREATE TABLE `usuarios` (
+  `idUsuario` int(11) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
+  `apellido` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `avatar` varchar(255) DEFAULT NULL,
+  `rol` enum('empleado','administrador') NOT NULL DEFAULT 'empleado'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`idUsuario`, `nombre`, `apellido`, `email`, `password`, `avatar`, `rol`) VALUES
+(2, 'carlo', 'frank', 'frankc@gmail.com', '0Od3ctO28xC/+R52IFE/dViLTUC+7P9636SJVUFkyK8=', '/Uploads\\avatar_2.png', 'administrador'),
+(3, 'Toto', 'Vasco', 'eltoto@gmail.com', '6CoJujypOl0r7veNrE9nYn3cAX8t/OlK0EE3+miXUUA=', '/Uploads\\avatar_3.jpg', 'empleado'),
+(4, 'Marcos', 'Pena', 'Marc@gmail.com', '9zIa+WH18BN9CDA2M+bIG4xnqe2YzgY5O2MH9YiWiks=', NULL, 'administrador');
 
 --
 -- Índices para tablas volcadas
@@ -181,6 +206,12 @@ ALTER TABLE `propietarios`
   ADD UNIQUE KEY `email` (`email`);
 
 --
+-- Indices de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  ADD PRIMARY KEY (`idUsuario`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -213,6 +244,12 @@ ALTER TABLE `pagos`
 --
 ALTER TABLE `propietarios`
   MODIFY `idPropietario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT de la tabla `usuarios`
+--
+ALTER TABLE `usuarios`
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Restricciones para tablas volcadas

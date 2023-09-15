@@ -5,9 +5,7 @@
     var listPropietarios = (List<Propietario>)ViewBag.Propietarios;
 }
 
-<h1>Crear Nuevo</h1>
-
-<h4>Inmueble</h4>
+<h1>Crear Nuevo Inmueble</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -15,7 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IdPropietario" class="control-label">Propietario</label>
-                <select class="form-control" name="IdPropietario">
+                <select class="form-select" name="IdPropietario">
                     @foreach(var pro in  listPropietarios){
                         <option value="@pro.IdPropietario">@(pro.ToString())</option>
                     }
@@ -23,13 +21,13 @@
                 <span asp-validation-for="IdPropietario" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CantidadDeAmbientes" class="control-label"></label>
+                <label asp-for="CantidadDeAmbientes" class="control-label">Cantidad de Ambientes</label>
                 <input asp-for="CantidadDeAmbientes" class="form-control" />
                 <span asp-validation-for="CantidadDeAmbientes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Uso" class="control-label"></label>
-                <select asp-for="Uso" class="form-control">
+                <select asp-for="Uso" class="form-select">
                     <option value="comercial">Comercial</option>
                     <option value="residencial">Residencial</option>
                 </select>
@@ -42,7 +40,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Tipo" class="control-label"></label>
-                <select asp-for="Tipo" class="form-control">
+                <select asp-for="Tipo" class="form-select">
                     <option value="local">Local</option>
                     <option value="deposito">Deposito</option>
                     <option value="casa">Casa</option>
@@ -72,13 +70,10 @@
             </div>
             <br>
             <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
+                <input type="submit" value="Crear" class="btn btn-primary" /> |
+                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Volver atras.</a>
 </div>
 

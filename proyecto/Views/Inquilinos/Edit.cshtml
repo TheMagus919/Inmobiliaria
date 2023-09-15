@@ -4,16 +4,14 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Editar</h1>
-
-<h4>Inquilino</h4>
+<h1>Editar Inquilino</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdInquilino" class="control-label"></label>
+                <label asp-for="IdInquilino" class="control-label">Id Inquilino</label>
                 <input asp-for="IdInquilino" class="form-control" readonly/>
                 <span asp-validation-for="IdInquilino" class="text-danger"></span>
             </div>
@@ -39,17 +37,14 @@
             </div>
             <div class="form-group">
                 <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
+                <input asp-for="Email" type="email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary" /> |
+                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Volver atras.</a>
 </div>
 

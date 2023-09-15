@@ -30,7 +30,7 @@ public class Inmueble{
 
     public override string ToString()
         {
-            return $"{IdPropietario}";
+            return $"{Duenio.Nombre} {Duenio.Apellido}";
         }
 }
 }

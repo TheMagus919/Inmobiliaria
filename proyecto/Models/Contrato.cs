@@ -24,7 +24,7 @@ public class Contrato{
 
     public override string ToString()
         {
-            return $"{IdContrato} - {Vive} - {Lugar}";
+            return $" {Vive} ";
         }
 }
 }

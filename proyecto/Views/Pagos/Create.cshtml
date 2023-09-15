@@ -23,8 +23,8 @@
                 <span asp-validation-for="FechaDePago" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdContrato" class="control-label">Contrato</label>
-                <select class="form-control" name="IdContrato">
+                <label asp-for="IdContrato" class="control-label">Contrato a Nombre de</label>
+                <select class="form-select" name="IdContrato">
                     @foreach(var pro in  listContratos){
                         <option value="@pro.IdContrato">@(pro.ToString())</option>
                     }
@@ -37,13 +37,10 @@
                 <span asp-validation-for="Importe" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" />
+                <input type="submit" value="Crear" class="btn btn-primary" /> |
+                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Volver atras.</a>
 </div>
 

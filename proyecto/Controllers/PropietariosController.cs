@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using proyecto.Models;
@@ -126,7 +127,7 @@ namespace proyecto.Controllers
                 throw;
             }
         }
-
+        [Authorize(Policy = "administrador")]
         // GET: Propietarios/Delete/5
         public ActionResult Delete(int id)
         {   
@@ -146,6 +147,7 @@ namespace proyecto.Controllers
         // POST: Propietarios/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id, Propietario propietario)
         {
             try

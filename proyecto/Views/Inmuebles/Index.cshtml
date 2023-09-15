@@ -3,7 +3,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Inmueble</h1>
+<h1>Inmuebles</h1>
 
 <p>
     <a asp-action="Create">Crear Nuevo Inmueble</a>
@@ -12,28 +12,10 @@
     <thead>
         <tr>
             <th>
-                <h3>IdInmueble</h3>
+                <h3>Id Inmueble</h3>
             </th>
             <th>
                 <h3>Nombre del Propietario</h3>
-            </th>
-            <th>
-                <h3>CantidadDeAmbientes</h3>
-            </th>
-            <th>
-                <h3>Uso</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
-            <th>
-                <h3>Tipo</h3>
-            </th>
-            <th>
-                <h3>Longitud</h3>
-            </th>
-            <th>
-                <h3>Latitud</h3>
             </th>
             <th>
                 <h3>Precio</h3>
@@ -54,24 +36,6 @@
             </td>
             <td>
                 @(item.Duenio.Nombre + " " + item.Duenio.Apellido)              
-            </td>                    
-            <td>
-                @Html.DisplayFor(modelItem => item.CantidadDeAmbientes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Uso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tipo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Longitud)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Latitud)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Precio)
@@ -83,11 +47,18 @@
                         <p>False</p>
                     }
             </td>
-            <td>
+            @if(User.IsInRole("administrador")){
+                <td>
                 @Html.ActionLink("Editar", "Edit", new { id= item.IdInmueble}) |
                 @Html.ActionLink("Detalles", "Details", new { id= item.IdInmueble }) |
                 @Html.ActionLink("Eliminar", "Delete", new { id= item.IdInmueble })
+                </td>
+            }else{
+                <td>
+                @Html.ActionLink("Editar", "Edit", new { id= item.IdInmueble}) |
+                @Html.ActionLink("Detalles", "Details", new { id= item.IdInmueble })
             </td>
+            }
         </tr>
         }
     </tbody>

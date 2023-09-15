@@ -4,14 +4,13 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Detalles</h1>
+<h1>Detalles Del Propietario</h1>
 
 <div>
-    <h4>Propietario</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdPropietario)
+            Id Propietario
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IdPropietario)
@@ -48,7 +47,9 @@
         </dd>
     </dl>
 </div>
-<div>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.IdPropietario }) |
-    <a asp-action="Index">Volver atras.</a>
+<div class="form-group">
+    <form action='/Propietarios/Edit/@Model.IdPropietario'>
+        <button type="submit" class="btn btn-primary">Editar</button> |
+        <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+    </form>
 </div>
