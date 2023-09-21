@@ -12,6 +12,7 @@ namespace proyecto.Controllers
     public class PropietariosController : Controller
     {
         // GET: Propietarios
+        [Authorize]
         public ActionResult Index()
         {   
             try
@@ -32,6 +33,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Propietarios/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {   
             try
@@ -48,6 +50,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Propietarios/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -56,6 +59,7 @@ namespace proyecto.Controllers
         // POST: Propietarios/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(Propietario propietario)
         {
             try
@@ -84,7 +88,7 @@ namespace proyecto.Controllers
                 throw;
             }
         }
-
+        [Authorize]
         // GET: Propietarios/Edit/5
         public ActionResult Edit(int id)
         {   
@@ -104,6 +108,7 @@ namespace proyecto.Controllers
         // POST: Propietarios/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int id, Propietario propietario)
         {
             try

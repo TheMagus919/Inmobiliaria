@@ -10,7 +10,7 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            Id Pago
+            Id
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.IdPago)
@@ -28,10 +28,10 @@
             @Html.DisplayFor(model => model.FechaDePago)
         </dd>
         <dt class = "col-sm-2">
-            Contrato a Nombre de
+            Direccion
         </dt>
         <dd class = "col-sm-10">
-            @(Model.contrato.Vive.Nombre + " " + Model.contrato.Vive.Apellido)
+            @(Model.contrato.Lugar.Direccion)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Importe)

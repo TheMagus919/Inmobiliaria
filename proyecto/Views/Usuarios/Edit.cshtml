@@ -11,7 +11,7 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdUsuario" class="control-label">Id Usuario</label>
+                <label asp-for="IdUsuario" class="control-label">Id</label>
                 <input asp-for="IdUsuario" class="form-control" readonly/>
                 <span asp-validation-for="IdUsuario" class="text-danger"></span>
             </div>
@@ -35,6 +35,9 @@
                 @Html.ActionLink("Cambiar Contraseña", "CambiarPassword", new { id= Model.IdUsuario })
             </div>
             <div class="form-group">
+                <img src="@(ViewBag.Avatar)" alt="..." height="200px" width="200px">
+            </div>
+            <div class="form-group">
                 <label class="control-label">Para cambiar el Avatar</label>
                 @Html.ActionLink("Cambiar Avatar", "CambiarFoto", new { id= Model.IdUsuario })
             </div>
@@ -48,7 +51,7 @@
                 @if(User.IsInRole("administrador")){
                     <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
                 }else{
-                    <button class="btn btn-secondary" action="https://localhost:7183/">Volver atras</button>
+                    <button class="btn btn-secondary"><a href="https://localhost:7183/" style="text-decoration: none; color:white;">Volver atras</a></button>
                 }
             </div>
         </form>

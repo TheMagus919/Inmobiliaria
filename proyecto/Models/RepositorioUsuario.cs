@@ -63,7 +63,7 @@ public class RepositorioUsuario
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"UPDATE usuarios 
-					SET Nombre=@nombre, Apellido=@apellido, Email=@Email, Password=@Password, Avatar=@Avatar, Rol=@Rol
+					SET Nombre=@nombre, Apellido=@apellido, Email=@Email, Rol=@Rol
 					WHERE IdUsuario = @id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -71,15 +71,6 @@ public class RepositorioUsuario
 					command.Parameters.AddWithValue("@nombre", u.Nombre);
 					command.Parameters.AddWithValue("@apellido", u.Apellido);
 					command.Parameters.AddWithValue("@Email", u.Email);
-					command.Parameters.AddWithValue("@Password", u.Password);
-					if (String.IsNullOrEmpty(u.Avatar))
-					{
-						command.Parameters.AddWithValue("@Avatar", DBNull.Value);
-					}
-					else
-					{
-						command.Parameters.AddWithValue("@Avatar", u.Avatar);
-					}
 					command.Parameters.AddWithValue("@Rol", u.Rol);
 					command.Parameters.AddWithValue("@id", u.IdUsuario);
 					connection.Open();
@@ -238,7 +229,7 @@ public class RepositorioUsuario
 			Usuario u = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdUsuario, Nombre, Apellido, Email, Password, Rol
+				string sql = @"SELECT IdUsuario, Nombre, Apellido, Email, Password, Avatar, Rol
 					FROM usuarios
 					WHERE Email=@Email";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
@@ -255,6 +246,7 @@ public class RepositorioUsuario
 							Nombre = reader.GetString("Nombre"),
 							Apellido = reader.GetString("Apellido"),
 							Email = reader.GetString("Email"),
+							Avatar = reader["Avatar"] == DBNull.Value ? "" : reader.GetString("Avatar"),
 							Password = reader.GetString("Password"),
 							Rol = reader.GetString("Rol"),
 						};

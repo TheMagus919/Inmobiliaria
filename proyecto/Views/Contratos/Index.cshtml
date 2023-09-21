@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                <h3>Id Contrato</h3>
+                <h3>Id</h3>
             </th>
             <th>
-                <h3>Nombre del Propietario del Inmueble</h3>
+                <h3>Direccion</h3>
             </th>
             <th>
-                <h3>Nombre del Inquilino</h3>
+                <h3>Inquilino</h3>
             </th>
             <th>
                 <h3>Opciones</h3>
@@ -33,7 +33,7 @@
                 @Html.DisplayFor(modelItem => item.IdContrato)
             </td>
             <td>
-                @(item.Lugar.Duenio.Nombre + " " + item.Lugar.Duenio.Apellido)           
+                @(item.Lugar.Direccion)           
             </td>                    
             <td>
                 @(item.Vive.Nombre + " " + item.Vive.Apellido) 

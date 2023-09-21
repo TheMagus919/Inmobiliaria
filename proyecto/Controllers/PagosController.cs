@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using proyecto.Models;
@@ -11,6 +12,7 @@ namespace proyecto.Controllers
     public class PagosController : Controller
     {
         // GET: Pagos
+        [Authorize]
         public ActionResult Index()
         {   
             RepositorioPago repositorioPago = new RepositorioPago();
@@ -19,6 +21,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Pagos/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             try
@@ -34,6 +37,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Pagos/Create
+        [Authorize]
         public ActionResult Create()
         {
             try{
@@ -48,6 +52,7 @@ namespace proyecto.Controllers
         // POST: Pagos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(Pago pago)
         {
             try
@@ -69,6 +74,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Pagos/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
             try
@@ -88,6 +94,7 @@ namespace proyecto.Controllers
         // POST: Pagos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int id, Pago pago)
         {
             try
@@ -103,6 +110,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Pagos/Delete/5
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id)
         {
             try
@@ -120,6 +128,7 @@ namespace proyecto.Controllers
         // POST: Pagos/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id, Pago pago)
         {
             try

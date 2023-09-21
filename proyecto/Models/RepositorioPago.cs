@@ -80,8 +80,8 @@ public class RepositorioPago
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT 
-					IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inq.Nombre, inq.Apellido
-					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino";
+					IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inm.Direccion
+					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -100,9 +100,8 @@ public class RepositorioPago
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),
-								Vive = new Inquilino{
-									Nombre = reader.GetString("Nombre"),
-									Apellido = reader.GetString("Apellido"),
+								Lugar = new Inmueble{
+									Direccion = reader.GetString("Direccion"),
 								}
 							}
 						};
@@ -157,8 +156,8 @@ public class RepositorioPago
 			Pago p = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inq.Nombre, inq.Apellido
-					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino
+				string sql = @"SELECT IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inm.Direccion
+					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble
 					WHERE IdPago=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -179,9 +178,8 @@ public class RepositorioPago
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),
-								Vive = new Inquilino{
-									Nombre = reader.GetString("Nombre"),
-									Apellido = reader.GetString("Apellido"),
+								Lugar = new Inmueble{
+									Direccion = reader.GetString("Direccion"),
 								}
 							}
 						};

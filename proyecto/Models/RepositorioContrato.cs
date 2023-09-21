@@ -80,8 +80,8 @@ public class RepositorioContrato
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
 				string sql = @"SELECT 
-					IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, inq.Nombre, inq.Apellido, inm.IdPropietario, p.Nombre AS nom, p.Apellido AS ap
-					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble INNER JOIN propietarios p ON inm.IdPropietario = p.IdPropietario";
+					IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, inq.Nombre, inq.Apellido, inm.Direccion
+					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
 					command.CommandType = CommandType.Text;
@@ -101,10 +101,7 @@ public class RepositorioContrato
 								Apellido = reader.GetString("Apellido"),
 							},
 							Lugar = new Inmueble{
-								Duenio = new Propietario{
-									Nombre = reader.GetString("nom"),
-									Apellido = reader.GetString("ap"),
-								}
+								Direccion = reader.GetString("Direccion"),
 							},
 						};
 						res.Add(c);
@@ -153,8 +150,8 @@ public class RepositorioContrato
 			Contrato c = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, inq.Nombre, inq.Apellido, p.Nombre AS nom, p.Apellido AS ap
-					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble INNER JOIN propietarios p ON inm.IdPropietario = p.IdPropietario
+				string sql = @"SELECT IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, inq.Nombre, inq.Apellido, inm.Direccion
+					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble
 					WHERE IdContrato=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -172,11 +169,7 @@ public class RepositorioContrato
                             FechaDesde = reader.GetDateTime("FechaDesde"),
                             FechaHasta = reader.GetDateTime("FechaHasta"),
 							Lugar = new Inmueble{
-								IdInmueble = reader.GetInt32("IdInmueble"),
-								Duenio = new Propietario{
-									Nombre = reader.GetString("nom"),
-									Apellido = reader.GetString("ap"),
-								}
+								Direccion = reader.GetString("Direccion"),
 							},
 							Vive = new Inquilino{
 								Nombre = reader.GetString("Nombre"),

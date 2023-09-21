@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using proyecto.Models;
@@ -11,6 +12,7 @@ namespace proyecto.Controllers
     public class InquilinosController : Controller
     {
         // GET: Inquilinos
+        [Authorize]
         public ActionResult Index()
         {   
             try{
@@ -28,6 +30,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inquilinos/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {
             try{
@@ -41,6 +44,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inquilinos/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
@@ -49,6 +53,7 @@ namespace proyecto.Controllers
         // POST: Inquilinos/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(Inquilino inquilino)
         {
             try
@@ -80,6 +85,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inquilinos/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
             try
@@ -98,6 +104,7 @@ namespace proyecto.Controllers
         // POST: Inquilinos/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int id, Inquilino inquilino)
         {
             try
@@ -124,6 +131,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inquilinos/Delete/5
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id)
         {   
             try
@@ -143,6 +151,7 @@ namespace proyecto.Controllers
         // POST: Inquilinos/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id, Inquilino inquilino)
         {
             try

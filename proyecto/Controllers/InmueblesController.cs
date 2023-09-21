@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using proyecto.Models;
@@ -11,6 +12,7 @@ namespace proyecto.Controllers
     public class InmueblesController : Controller
     {
         // GET: Inmuebles
+        [Authorize]
         public ActionResult Index()
         {
             try
@@ -30,6 +32,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inmuebles/Details/5
+        [Authorize]
         public ActionResult Details(int id)
         {   
             try
@@ -45,6 +48,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inmuebles/Create
+        [Authorize]
         public ActionResult Create()
         {   try{
             RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
@@ -58,13 +62,24 @@ namespace proyecto.Controllers
         // POST: Inmuebles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(Inmueble inmueble)
         {
             try
             {   
                 if (ModelState.IsValid){
                     RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
-                    repositorioInmueble.Alta(inmueble);
+                    List<Inmueble> inm = new List<Inmueble>();
+                    inm = repositorioInmueble.ObtenerTodos();
+                    foreach(var item in inm){
+                        if(item.Direccion == inmueble.Direccion){
+                            ModelState.AddModelError("Direccion", "La dirección ya existe");
+                            TempData["Error"] = "La dirección ya existe";
+                            return RedirectToAction(nameof(Create));
+                        }else{
+                            repositorioInmueble.Alta(inmueble);
+                        }
+                    }
                     TempData["Id"] = inmueble.IdInmueble;
                     return RedirectToAction(nameof(Index));
                 }else{
@@ -79,6 +94,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inmuebles/Edit/5
+        [Authorize]
         public ActionResult Edit(int id)
         {
             try
@@ -98,6 +114,7 @@ namespace proyecto.Controllers
         // POST: Inmuebles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int id, Inmueble inmueble)
         {
             try
@@ -113,6 +130,7 @@ namespace proyecto.Controllers
         }
 
         // GET: Inmuebles/Delete/5
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id)
         {
             try
@@ -130,6 +148,7 @@ namespace proyecto.Controllers
         // POST: Inmuebles/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id, Inmueble inmueble)
         {
             try

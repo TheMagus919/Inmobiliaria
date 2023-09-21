@@ -13,13 +13,13 @@
     <thead>
         <tr>
             <th>
-                <h3>Id Pago</h3>
+                <h3>Id</h3>
             </th>
             <th>
                 <h3>Numero De Pago</h3>
             </th>
             <th>
-                <h3>Contrato a Nombre de</h3>
+                <h3>Direccion</h3>
             </th>
             <th>
                 <h3>Opciones</h3>
@@ -36,7 +36,7 @@
                 @Html.DisplayFor(modelItem => item.NumeroDePago)
             </td>
             <td>
-                @(item.contrato.Vive.Nombre + " " + item.contrato.Vive.Apellido)
+                @(item.contrato.Lugar.Direccion)
             </td>
             @if(User.IsInRole("administrador")){
                 <td>

@@ -12,13 +12,16 @@
     <thead>
         <tr>
             <th>
-                <h3>Id Inmueble</h3>
+                <h3>Id</h3>
             </th>
             <th>
-                <h3>Nombre del Propietario</h3>
+                <h3>Propietario</h3>
             </th>
             <th>
                 <h3>Precio</h3>
+            </th>
+            <th>
+                <h3>Direccion</h3>
             </th>
             <th>
                 <h3>Disponible</h3>
@@ -41,10 +44,13 @@
                 @Html.DisplayFor(modelItem => item.Precio)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
                 @if (item.Disponible.ToString() == "True") {
-                    <p>True</p>
+                    <p>Disponible</p>
                     }else{
-                        <p>False</p>
+                        <p>No Disponible</p>
                     }
             </td>
             @if(User.IsInRole("administrador")){

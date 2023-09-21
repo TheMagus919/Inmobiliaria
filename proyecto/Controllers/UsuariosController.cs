@@ -173,6 +173,7 @@ namespace proyecto.Controllers
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
 			var u = repositorioUsuario.ObtenerPorEmail(User.Identity.Name);
 			ViewBag.Roles = roles;
+			ViewBag.Avatar = u.Avatar;
 			return View("Edit", u);
 		}
 
@@ -249,8 +250,13 @@ namespace proyecto.Controllers
 					}
 					repositorioUsuario.ModificarAvatar(us);
 				}
-			ViewBag.Id = us.IdUsuario;	
-			return RedirectToAction(nameof(Index));
+			ViewBag.Id = us.IdUsuario;
+			if(User.IsInRole("administrador")){
+				return RedirectToAction(nameof(Index));
+			}else{
+				return RedirectToAction(nameof(Perfil));
+			}
+			
 		}
 
 		// GET: Usuarios/Edit/5
@@ -261,6 +267,7 @@ namespace proyecto.Controllers
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
 			var u = repositorioUsuario.ObtenerPorId(id);
 			ViewBag.Roles = roles;
+			ViewBag.Avatar = u.Avatar;
 			return View(u);
 		}
 
@@ -279,9 +286,11 @@ namespace proyecto.Controllers
 					vista = nameof(Perfil);
                     RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
 					var usuarioActual = repositorioUsuario.ObtenerPorEmail(User.Identity.Name);
-					if (usuarioActual.IdUsuario != id){
-						return RedirectToAction(nameof(Index), "Home");
-					}
+					usuarioActual.Apellido = u.Apellido;
+					usuarioActual.Nombre = u.Nombre;
+					usuarioActual.Email = u.Email;
+					usuarioActual.Rol = u.Rol;
+					repositorioUsuario.Modificacion(usuarioActual);
 				}else{
 					RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
 					var usuarioActual = repositorioUsuario.ObtenerPorId(id);
@@ -292,7 +301,11 @@ namespace proyecto.Controllers
 					repositorioUsuario.Modificacion(usuarioActual);
 				}
 				ViewBag.Id = u.IdUsuario;
-				return RedirectToAction(vista);
+				if(User.IsInRole("administrador")){
+					return RedirectToAction(nameof(Index));
+				}else{
+					return RedirectToAction(nameof(Perfil));
+				}
 			}
 			catch (Exception ex){
 				throw;
