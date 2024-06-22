@@ -1,0 +1,47 @@
+@model List<proyecto.Models.Inmueble>
+@{
+    ViewData["Title"] = "Inmuebles por Propietario";
+}
+
+<h1>Listado de Inmuebles que le pertenecen a @ViewBag.Propietario</h1>
+<a asp-action="SeleccionarPropietario">Volver atras</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>Id</h3>
+            </th>
+            <th>
+                <h3>Precio</h3>
+            </th>
+            <th>
+                <h3>Direccion</h3>
+            </th>
+            <th>
+                <h3>Disponible</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdInmueble)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @if (item.Disponible.ToString() == "True") {
+                    <p>Disponible</p>
+                    }else{
+                        <p>No Disponible</p>
+                    }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

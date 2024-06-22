@@ -10,14 +10,23 @@ namespace proyecto.Models{
 public class Propietario{
     [Key]
     public int IdPropietario { get; set;}
-    [Required]
+
+    [Required(ErrorMessage = "El campo Nombre es obligatorio")]
     public string Nombre { get; set;} = "";
-    [Required]
+
+    [Required(ErrorMessage = "El campo Apellido es obligatorio")]
     public string Apellido { get; set;} = "";
-    [Required]
+
+    [Required(ErrorMessage = "El campo DNI es obligatorio")]
+    [RegularExpression(@"^\d{8}$", ErrorMessage = "El DNI debe tener 8 dígitos")]
     public string Dni { get; set;} = "";
+
+    [Required(ErrorMessage = "El campo Telefono es obligatorio")]
+    [RegularExpression(@"^\d{7,15}$", ErrorMessage = "El teléfono debe tener entre 7 y 15 dígitos")]
     public string Telefono { get; set;} = "";
-    [Required, EmailAddress]
+
+    [Required(ErrorMessage = "El campo Email es obligatorio")]
+    [EmailAddress(ErrorMessage = "Email no válido")]
     public string Email { get; set;} = "";
 
         public override string ToString()

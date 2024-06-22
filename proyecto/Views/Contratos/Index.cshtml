@@ -1,14 +1,24 @@
 @model List<proyecto.Models.Contrato> 
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Contratos";
 }
 
 <h1>Contratos</h1>
-
-<p>
-    <a asp-action="Create">Crear Nuevo Contrato</a>
-</p>
+<div class="opcionesContenedor">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Crear Nuevo Contrato</a>
+    </p>
+    <p>
+        <a asp-action="FormFecha" class="btn btn-primary">Listar Contratos Vigentes por rango de fechas</a>
+    </p>
+    <p>
+        <a asp-action="FormInmueble" class="btn btn-primary">Listar Todos los Contratos de un Inmueble</a>
+    </p>
+    <p>
+        <a asp-action="FormRangoFecha" class="btn btn-primary">Listar Todos los Inmuebles desocupados por fecha</a>
+    </p>
+</div>
 <table class="table">
     <thead>
         <tr>

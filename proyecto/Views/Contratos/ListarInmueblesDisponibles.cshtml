@@ -1,0 +1,37 @@
+@model List<proyecto.Models.Inmueble> 
+
+@{
+    ViewData["Title"] = "Contratos";
+    var fechaInicio = ViewBag.fechaInicio;
+}
+
+<h1>Listado de inmuebles Desocupados entre las fechas: @ViewBag.fechaInicio.ToShortDateString() - @ViewBag.fechaFin.ToShortDateString()</h1>
+
+<p>
+    <a asp-action="Index">Volver menu Principal</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>IdInmueble</h3>
+            </th>
+            <th>
+                <h3>Direccion</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdInmueble)
+            </td>
+            <td>
+                @(item.Direccion)           
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

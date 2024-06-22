@@ -1,0 +1,35 @@
+@model proyecto.Models.Contrato
+
+@{
+    ViewData["Title"] = "Pago";
+    var listContratos = (List<Contrato>)ViewBag.Contratos;
+}
+
+<h1>Seleccionar Contrato para ver sus pagos</h1>
+@if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ListarPagos">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdContrato" class="control-label">Direccion</label>
+                <select class="form-select" name="IdContrato" required>
+                    @foreach(var pro in  listContratos){
+                        <option value="@pro.IdContrato">@(pro.IdContrato)</option>
+                    }
+                </select>
+                <span asp-validation-for="IdContrato" class="text-danger"></span>
+            </div>
+            <br>
+            <div class="form-group">
+                <input type="submit" value="Seleccionar" class="btn btn-primary" /> |
+                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+            </div>
+        </form>
+    </div>
+</div>

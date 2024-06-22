@@ -16,3 +16,20 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.opciones{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.opciones button{
+  margin-left: 5px;
+}
+
+.opcionesContenedor{
+  display: flex;
+  flex-wrap: wrap;
+}
+.opcionesContenedor p{
+  margin-left: 5px;
+}

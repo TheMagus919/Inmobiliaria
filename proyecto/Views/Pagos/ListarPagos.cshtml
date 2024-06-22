@@ -1,0 +1,47 @@
+@model List<proyecto.Models.Pago>
+
+@{
+    ViewData["Title"] = "Index";
+    int idContrato = ViewBag.IdContrato;
+}
+
+<h1>Listado de todos los Pagos del Contrato ID:@ViewBag.IdContrato</h1>
+
+<div class="opcionesContenedor">
+    <p>
+        <a asp-action="NuevoPago" asp-route-id="@idContrato" class="btn btn-primary">Realizar Pago</a>
+    </p>
+    <p>
+        <a asp-action="FormContrato" class="btn btn-secondary">Volver atras</a>
+    </p>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>Id</h3>
+            </th>
+            <th>
+                <h3>Numero De Pago</h3>
+            </th>
+            <th>
+                <h3>Direccion</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroDePago)
+            </td>
+            <td>
+                @(item.contrato.Lugar.Direccion)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,12 +1,10 @@
 @model proyecto.Models.Contrato
 
 @{
-    ViewData["Title"] = "Crear Contrato";
-    var listInquilinos = (List<Inquilino>)ViewBag.Inquilinos;
-        var listInmuebles = (List<Inmueble>)ViewBag.Inmuebles;
+    ViewData["Title"] = "Renovar Contrato";
 }
 
-<h1>Crear Nuevo Contrato</h1>
+<h1>Renovar Contrato</h1>
 @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
@@ -16,40 +14,41 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Renovar" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="IdContrato" class="control-label">Id</label>
+                <input asp-for="IdContrato" class="form-control" readonly/>
+                <span asp-validation-for="IdContrato" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="IdInmueble" class="control-label">Direccion</label>
-                <select class="form-select" name="IdInmueble" required>
-                    @foreach(var pro in listInmuebles){
-                        <option value="@pro.IdInmueble">@(pro.Direccion)</option>
-                    }
+                <select class="form-select" name="IdInmueble" readonly>
+                    <option value="@ViewBag.Inmueble.IdInmueble">@(ViewBag.Inmueble.Direccion)</option>
                 </select>
                 <span asp-validation-for="IdInmueble" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdInquilino" class="control-label">Inquilino</label>
-                <select class="form-select" name="IdInquilino" required>
-                    @foreach(var pro in listInquilinos){
-                        <option value="@pro.IdInquilino">@(pro.ToString())</option>
-                    }
+                <select class="form-select" name="IdInquilino" readonly>
+                    <option value="@ViewBag.Inquilino.IdInquilino">@(ViewBag.Inquilino.ToString())</option>
                 </select>
                 <span asp-validation-for="IdInquilino" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FechaDesde" class="control-label">Fecha Desde</label>
-                <input asp-for="FechaDesde" class="form-control" required/>
+                <input type="Date" asp-for="FechaDesde" class="form-control" value="@ViewBag.FechaHasta.ToString("yyyy-MM-dd")" readonly/>
                 <span asp-validation-for="FechaDesde" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FechaHasta" class="control-label">Fecha Hasta</label>
-                <input asp-for="FechaHasta" class="form-control" required/>
+                <input type="Date" asp-for="FechaHasta" class="form-control" value=""/>
                 <span asp-validation-for="FechaHasta" class="text-danger"></span>
             </div>
             <br>
             <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" /> |
-                <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
+                <input type="submit" value="Renovar" class="btn btn-primary" /> |
+                <button class="btn btn-secondary" asp-action="Index">Volver menu principal</button>
             </div>
         </form>
     </div>

@@ -58,8 +58,8 @@ namespace proyecto.Controllers
 
         // POST: Propietarios/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Propietario propietario)
         {
             try
@@ -80,6 +80,7 @@ namespace proyecto.Controllers
                     TempData["Id"] = propietario.IdPropietario;
                     return RedirectToAction(nameof(Index));
                 }else{
+                    TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
                     return View(propietario);
                 }
             }
@@ -107,33 +108,41 @@ namespace proyecto.Controllers
 
         // POST: Propietarios/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Propietario propietario)
         {
             try
-            {
-                RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
-                List<Propietario> rep = repositorioPropietario.ObtenerTodos();
-                    foreach(var asd in rep){
-                        if(asd.Dni == propietario.Dni && asd.IdPropietario != propietario.IdPropietario){
-                            ModelState.AddModelError("", "El DNI ya esta en uso");
-                            return View(propietario);
-                        }else if(asd.Email == propietario.Email && asd.IdPropietario != propietario.IdPropietario){
-                            ModelState.AddModelError("", "El Email ya esta en uso");
-                            return View(propietario);
+            {   
+                if(ModelState.IsValid){
+                    RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+                    List<Propietario> rep = repositorioPropietario.ObtenerTodos();
+                        foreach(var asd in rep){
+                            if(asd.Dni == propietario.Dni && asd.IdPropietario != propietario.IdPropietario){
+                                ModelState.AddModelError("", "El DNI ya esta en uso");
+                                return View(propietario);
+                            }else if(asd.Email == propietario.Email && asd.IdPropietario != propietario.IdPropietario){
+                                ModelState.AddModelError("", "El Email ya esta en uso");
+                                return View(propietario);
+                            }
                         }
-                    }
-                repositorioPropietario.Modificacion(propietario);
-                return RedirectToAction(nameof(Index));
+                    repositorioPropietario.Modificacion(propietario);
+                    TempData["Edit"] = propietario.IdPropietario;
+                    return RedirectToAction(nameof(Index));
+                }else{
+                    TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
+                    return View(propietario);
+                }
+                
             }
             catch(System.Exception)
             {
                 throw;
             }
         }
-        [Authorize(Policy = "administrador")]
+
         // GET: Propietarios/Delete/5
+        [Authorize(Policy = "administrador")]
         public ActionResult Delete(int id)
         {   
             try
@@ -151,13 +160,14 @@ namespace proyecto.Controllers
 
         // POST: Propietarios/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Policy = "administrador")]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Propietario propietario)
         {
             try
             {
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+                TempData["Delete"] = "Eliminada";
                 repositorioPropietario.Baja(id);
                 return RedirectToAction(nameof(Index));
             }

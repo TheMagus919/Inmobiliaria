@@ -61,8 +61,8 @@ namespace proyecto.Controllers
 
         // POST: Inmuebles/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Inmueble inmueble)
         {
             try
@@ -83,6 +83,7 @@ namespace proyecto.Controllers
                     TempData["Id"] = inmueble.IdInmueble;
                     return RedirectToAction(nameof(Index));
                 }else{
+                    TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
                     return View(inmueble);
                 }
                 
@@ -113,15 +114,20 @@ namespace proyecto.Controllers
 
         // POST: Inmuebles/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Inmueble inmueble)
         {
             try
-            {
-                RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
-                repositorioInmueble.Modificacion(inmueble);
-                return RedirectToAction(nameof(Index));
+            {   if (ModelState.IsValid){
+                    RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
+                    repositorioInmueble.Modificacion(inmueble);
+                    TempData["Edit"] = inmueble.IdInmueble;
+                    return RedirectToAction(nameof(Index));
+                }else{
+                    TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
+                    return View(inmueble);
+                }
             }
             catch(System.Exception)
             {
@@ -147,15 +153,74 @@ namespace proyecto.Controllers
 
         // POST: Inmuebles/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Policy = "administrador")]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Inmueble inmueble)
         {
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
+                TempData["Delete"] = "Eliminada";
                 repositorioInmueble.Baja(id);
                 return RedirectToAction(nameof(Index));
+            }
+            catch(System.Exception)
+            {
+                throw;
+            }
+        }
+
+        // GET: Inmuebles/ListaDisponibles
+        [Authorize]
+        public ActionResult ListaDisponibles()
+        {   
+            try
+            {
+                RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
+                List<Inmueble> inmuebles = repositorioInmueble.ObtenerListaDisponibles();
+                return View(inmuebles);
+            }
+            catch(System.Exception)
+            {
+                throw;
+            }
+        }
+
+        // GET: Inmuebles/SeleccionarPropietario
+        [Authorize]
+        public ActionResult SeleccionarPropietario()
+        {   
+            try
+            {
+                RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+                ViewBag.Propietarios = repositorioPropietario.ObtenerTodos();
+                return View();
+            }
+            catch(System.Exception)
+            {
+                throw;
+            }
+        }
+
+        // POST: Inmuebles/InmueblexPropietario/5
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult InmueblexPropietario(string IdPropietario)
+        {   
+            try
+            {
+                if (ModelState.IsValid){
+                    RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
+                    RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+                    int id = int.Parse(IdPropietario);
+                    ViewBag.Propietario  = repositorioPropietario.ObtenerPorId(id);
+                    List<Inmueble> inmuebles = repositorioInmueble.ObtenerListaInmueblesXPropietario(IdPropietario);
+                    return View(inmuebles);
+                }else{
+                    TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
+                    return RedirectToAction(nameof(SeleccionarPropietario));
+                }
             }
             catch(System.Exception)
             {

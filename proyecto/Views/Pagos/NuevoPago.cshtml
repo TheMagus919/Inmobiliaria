@@ -2,21 +2,20 @@
 
 @{
     ViewData["Title"] = "Crear Pago";
-    var listContratos = (List<Contrato>)ViewBag.Contratos;
+    var contrato = ViewBag.Contrato;
 }
 
-<h1>Crear Nuevo Pago</h1>
+<h1>Crear Nuevo Pago para contrato ID:@contrato.IdContrato</h1>
 @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
             @TempData["ErrorMessage"]
         </div>
     }
-    
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="NuevoPago" asp-route-id="@contrato.IdContrato">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="NumeroDePago" class="control-label">Numero De Pago</label>
@@ -29,12 +28,8 @@
                 <span asp-validation-for="FechaDePago" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdContrato" class="control-label">Direccion</label>
-                <select class="form-select" name="IdContrato" required>
-                    @foreach(var pro in  listContratos){
-                        <option value="@pro.IdContrato">@(pro.Lugar.Direccion)</option>
-                    }
-                </select>
+                <label asp-for="IdContrato" class="control-label">ID Contrato</label>
+                <input asp-for="IdContrato" class="form-control" value="@contrato.IdContrato" readonly/>
                 <span asp-validation-for="IdContrato" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -44,7 +39,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" /> |
-                <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
+                <a asp-action="Index" class="btn btn-secondary">Volver al menu Pagos</a>
             </div>
         </form>
     </div>

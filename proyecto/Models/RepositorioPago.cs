@@ -189,4 +189,45 @@ public class RepositorioPago
 			}
 			return p;
 		}
+
+		public List<Pago> ListarPagos(int id)
+		{
+			List<Pago> res = new List<Pago>();
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = @"SELECT 
+					IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inm.Direccion
+					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble
+					WHERE p.IdContrato = @IdContrato";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.CommandType = CommandType.Text;
+					command.Parameters.AddWithValue("@IdContrato", id);
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Pago p = new Pago
+						{
+							IdPago = reader.GetInt32(nameof(Pago.IdPago)),
+                            NumeroDePago = reader.GetInt32("NumeroDePago"),
+                            FechaDePago = reader.GetDateTime("FechaDePago"),
+                            Importe = reader.GetDecimal("Importe"),
+                            IdContrato = reader.GetInt32("IdContrato"),
+							contrato = new Contrato{
+                                IdContrato = reader.GetInt32("IdContrato"),
+								IdInquilino = reader.GetInt32("IdInquilino"),
+								IdInmueble = reader.GetInt32("IdInmueble"),
+								Lugar = new Inmueble{
+									Direccion = reader.GetString("Direccion"),
+								}
+							}
+						};
+						res.Add(p);
+					}
+					connection.Close();
+				}
+			}
+			return res;
+		}
 	}

@@ -10,16 +10,25 @@ namespace proyecto.Models{
 public class Contrato{
     [Key]
     public int IdContrato { get; set;}
-    [Required]
+
+    [Required(ErrorMessage = "El campo Inmueble es obligatorio")]
     public int IdInmueble { get; set;}
-    [Required]
+
+    [Required(ErrorMessage = "El campo Inquilino es obligatorio")]
     public int IdInquilino { get; set;}
-    [Required]
-    public DateTime FechaDesde { get; set;}
-    [Required]
-    public DateTime FechaHasta { get; set;}
+
+    [Required(ErrorMessage = "El campo Fecha Desde es obligatorio")]
+    public DateTime? FechaDesde { get; set;}
+
+    [Required(ErrorMessage = "El campo Fecha Hasta es obligatorio")]
+    public DateTime? FechaHasta { get; set;}
+
+    public bool Cancelado { get; set;}
+
     [ForeignKey(nameof(IdInquilino))]
     public Inquilino? Vive { get; set;}
+    
+    [ForeignKey(nameof(IdInmueble))]
     public Inmueble? Lugar { get; set;}
 
     public override string ToString()

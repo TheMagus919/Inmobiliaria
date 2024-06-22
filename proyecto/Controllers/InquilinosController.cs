@@ -52,8 +52,8 @@ namespace proyecto.Controllers
 
         // POST: Inquilinos/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Inquilino inquilino)
         {
             try
@@ -74,6 +74,7 @@ namespace proyecto.Controllers
                     TempData["Id"] = inquilino.IdInquilino;
                     return RedirectToAction(nameof(Index));
                 }else{
+                    TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
                     return View(inquilino);
                 }
                 
@@ -103,25 +104,31 @@ namespace proyecto.Controllers
 
         // POST: Inquilinos/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Inquilino inquilino)
         {
             try
-            {
-                RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
-                List<Inquilino> rep = repositorioInquilino.ObtenerTodos();
-                    foreach(var asd in rep){
-                        if(asd.Dni == inquilino.Dni && asd.IdInquilino != inquilino.IdInquilino){
-                            ModelState.AddModelError("", "El DNI ya esta en uso");
-                            return View(inquilino);
-                        }else if(asd.Email == inquilino.Email && asd.IdInquilino != inquilino.IdInquilino){
-                            ModelState.AddModelError("", "El Email ya esta en uso");
-                            return View(inquilino);
+            {   
+                if (ModelState.IsValid){
+                    RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
+                    List<Inquilino> rep = repositorioInquilino.ObtenerTodos();
+                        foreach(var asd in rep){
+                            if(asd.Dni == inquilino.Dni && asd.IdInquilino != inquilino.IdInquilino){
+                                ModelState.AddModelError("", "El DNI ya esta en uso");
+                                return View(inquilino);
+                            }else if(asd.Email == inquilino.Email && asd.IdInquilino != inquilino.IdInquilino){
+                                ModelState.AddModelError("", "El Email ya esta en uso");
+                                return View(inquilino);
+                            }
                         }
-                    }
-                repositorioInquilino.Modificacion(inquilino);
-                return RedirectToAction(nameof(Index));
+                    repositorioInquilino.Modificacion(inquilino);
+                    TempData["Edit"] = inquilino.IdInquilino;
+                    return RedirectToAction(nameof(Index));
+                }else{
+                    TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
+                    return View(inquilino);
+                }
 
             }
             catch(System.Exception)
@@ -150,13 +157,14 @@ namespace proyecto.Controllers
 
         // POST: Inquilinos/Delete/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Authorize(Policy = "administrador")]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Inquilino inquilino)
         {
             try
             {
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
+                TempData["Delete"] = "Eliminada";
                 repositorioInquilino.Baja(id);
                 return RedirectToAction(nameof(Index));
 

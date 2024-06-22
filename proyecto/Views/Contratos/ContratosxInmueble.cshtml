@@ -1,0 +1,42 @@
+@model List<proyecto.Models.Contrato> 
+
+@{
+    ViewData["Title"] = "Contratos por Inmueble";
+}
+
+<h1>Listado de Contratos que pertenecen al inmueble ID:@ViewBag.IdInmueble</h1>
+
+<p>
+    <a asp-action="Index">Volver al menu Principal</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>Id</h3>
+            </th>
+            <th>
+                <h3>Direccion</h3>
+            </th>
+            <th>
+                <h3>Inquilino</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdContrato)
+            </td>
+            <td>
+                @(item.Lugar.Direccion)           
+            </td>                    
+            <td>
+                @(item.Vive.Nombre + " " + item.Vive.Apellido) 
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

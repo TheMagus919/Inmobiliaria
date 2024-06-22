@@ -1,7 +1,7 @@
 @model proyecto.Models.Contrato
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalles de Contrato";
 }
 
 <h1>Detalles del Contrato</h1>
@@ -41,9 +41,17 @@
         </dd>
     </dl>
 </div>
-<div class="form-group">
-    <form action='/Contratos/Edit/@Model.IdContrato'>
-        <button type="submit" class="btn btn-primary">Editar</button> |
-        <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
-    </form>
+<div class="form-group opciones">
+        <form action='/Contratos/Edit/@Model.IdContrato'>
+            <button type="submit" class="btn btn-primary">Editar</button> |
+            <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+        </form>
+    @if(ViewBag.Opcion == "Aprobado"){
+        <form action='/Contratos/Renovar/@Model.IdContrato'>
+            <button type="submit" class="btn btn-success">Renovar</button>
+        </form>
+        <form action='/Contratos/Cancelar/@Model.IdContrato' method="GET">
+            <button type="submit" class="btn btn-danger">Cancelar Contrato</button>
+        </form>
+    }
 </div>

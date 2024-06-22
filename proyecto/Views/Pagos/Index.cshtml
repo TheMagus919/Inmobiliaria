@@ -1,14 +1,18 @@
 @model List<proyecto.Models.Pago>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Pagos";
 }
 
 <h1>Pagos</h1>
-
-<p>
-    <a asp-action="Create">Crear Nuevo Pago</a>
-</p>
+<div class="opcionesContenedor">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Crear Nuevo Pago</a>
+    </p>
+    <p>
+        <a asp-action="FormContrato" class="btn btn-primary">Listar todos los Pagos de un Contrato</a>
+    </p>
+</div>
 <table class="table">
     <thead>
         <tr>

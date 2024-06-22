@@ -1,13 +1,21 @@
 @model List<proyecto.Models.Inmueble>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Inmuebles";
 }
 
 <h1>Inmuebles</h1>
+<div class="opcionesContenedor">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Crear Nuevo Inmueble</a>
+    </p>
+    <p>
+        <a asp-action="ListaDisponibles" class="btn btn-primary">Listar Inmuebles Disponibles</a>
+    </p>
+    <p>
+        <a asp-action="SeleccionarPropietario" class="btn btn-primary">Listar Inmuebles que pertenecen a un Propietario</a>
+    </p>
+</div>
 
-<p>
-    <a asp-action="Create">Crear Nuevo Inmueble</a>
-</p>
 <table class="table">
     <thead>
         <tr>

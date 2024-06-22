@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - proyecto</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="https://cdn.linearicons.com/free/1.0.0/icon-font.min.css">
@@ -81,6 +81,34 @@
 						<span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
 					</button>
 				</div>
+			}else if (ViewBag.Edit != null){
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>¡Éxito!</strong> la endidad fue editada con exito con ID: @ViewBag.Edit
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                    </button>
+                </div>
+			}else if (ViewBag.Delete != null){
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>¡Éxito!</strong> la endidad fue eliminada con exito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                    </button>
+                </div>
+			}else if (ViewBag.Renovado != null){
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>¡Éxito!</strong> El contrato fue renovado con exito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                    </button>
+                </div>
+			}else if (ViewBag.Cancelado != null){
+				<div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>¡Éxito!</strong> El contrato fue cancelado con exito.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><span class="lnr lnr-cross-circle"></span></span>
+                    </button>
+                </div>
 			}
             <div class="pb-3">
                 @RenderBody()
@@ -89,7 +117,7 @@
     </main>    
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - proyecto - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - proyecto - Inmobiliaria - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     @await RenderSectionAsync("Scripts", required: false)

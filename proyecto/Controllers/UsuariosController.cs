@@ -19,7 +19,6 @@ namespace proyecto.Controllers
     {
         private readonly IConfiguration configuration;
         private readonly IWebHostEnvironment environment;
-		//private  RepositorioUsuario repositorioUsuario;
         private String[] roles = {"administrador", "empleado"};
 		public UsuariosController(IConfiguration configuration, IWebHostEnvironment environment)
 		{

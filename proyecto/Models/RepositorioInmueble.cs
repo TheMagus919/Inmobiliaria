@@ -201,4 +201,88 @@ public class RepositorioInmueble
 			}
 			return i;
 		}
+
+		public List<Inmueble> ObtenerListaDisponibles(int paginaNro = 1, int tamPagina = 10)
+		{
+			List<Inmueble> res = new List<Inmueble>();
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = @"SELECT IdInmueble, i.IdPropietario, CantidadDeAmbientes, Uso, Direccion, Tipo, Latitud, Longitud, Precio, Disponible, p.Nombre, p.Apellido
+					FROM inmuebles i 
+					INNER JOIN propietarios p ON i.IdPropietario = p.IdPropietario
+					WHERE i.disponible = true";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Inmueble i = new Inmueble
+						{
+							IdInmueble = reader.GetInt32(nameof(Inmueble.IdInmueble)),
+                            IdPropietario = reader.GetInt32("IdPropietario"),
+                            CantidadDeAmbientes = reader.GetInt32("CantidadDeAmbientes"),
+                            Uso = reader.GetString("Uso"),
+                            Direccion = reader.GetString("Direccion"),
+                            Tipo = reader.GetString("Tipo"),
+                            Latitud = reader.GetDecimal("Latitud"),
+                            Longitud = reader.GetDecimal("Longitud"),
+                            Precio = reader.GetDecimal("Precio"),
+                            Disponible = reader.GetBoolean("Disponible"),
+							Duenio = new Propietario{
+								Nombre = reader.GetString("Nombre"),
+								Apellido = reader.GetString("Apellido"),
+							},
+						};
+						res.Add(i);
+					}
+					connection.Close();
+				}
+			}
+			return res;
+		}
+
+		public List<Inmueble> ObtenerListaInmueblesXPropietario(string idPropietario, int paginaNro = 1, int tamPagina = 10)
+		{	
+			int id = int.Parse(idPropietario);
+			List<Inmueble> res = new List<Inmueble>();
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = @"SELECT IdInmueble, i.IdPropietario, CantidadDeAmbientes, Uso, Direccion, Tipo, Latitud, Longitud, Precio, Disponible, p.Nombre, p.Apellido
+					FROM inmuebles i 
+					INNER JOIN propietarios p ON i.IdPropietario = p.IdPropietario
+					WHERE i.IdPropietario = @IdPropietario";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.CommandType = CommandType.Text;
+					command.Parameters.AddWithValue("@IdPropietario", id);
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Inmueble i = new Inmueble
+						{
+							IdInmueble = reader.GetInt32(nameof(Inmueble.IdInmueble)),
+                            IdPropietario = reader.GetInt32("IdPropietario"),
+                            CantidadDeAmbientes = reader.GetInt32("CantidadDeAmbientes"),
+                            Uso = reader.GetString("Uso"),
+                            Direccion = reader.GetString("Direccion"),
+                            Tipo = reader.GetString("Tipo"),
+                            Latitud = reader.GetDecimal("Latitud"),
+                            Longitud = reader.GetDecimal("Longitud"),
+                            Precio = reader.GetDecimal("Precio"),
+                            Disponible = reader.GetBoolean("Disponible"),
+							Duenio = new Propietario{
+								Nombre = reader.GetString("Nombre"),
+								Apellido = reader.GetString("Apellido"),
+							},
+						};
+						res.Add(i);
+					}
+					connection.Close();
+				}
+			}
+			return res;
+		}
 	}

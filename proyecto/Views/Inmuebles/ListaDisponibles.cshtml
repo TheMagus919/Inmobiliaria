@@ -1,0 +1,37 @@
+@model List<proyecto.Models.Inmueble>
+@{
+    ViewData["Title"] = "Inmuebles Disponibles";
+}
+
+<h1>Lista de inmuebles Disponibles y sus Dueños</h1>
+<a asp-action="Index">Volver atras</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <h3>IdInmueble</h3>
+            </th>
+            <th>
+                <h3>Direccion</h3>
+            </th>
+            <th>
+                <h3>Dueño</h3>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model) {
+            <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdInmueble)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @(item.Duenio.Nombre + " " + item.Duenio.Apellido)              
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

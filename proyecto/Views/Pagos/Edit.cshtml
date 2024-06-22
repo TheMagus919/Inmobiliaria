@@ -1,10 +1,16 @@
 @model proyecto.Models.Pago
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Editar Pago";
 }
 
 <h1>Editar Pago</h1>
+@if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,17 +23,17 @@
             </div>
             <div class="form-group">
                 <label asp-for="NumeroDePago" class="control-label">Numero de Pago</label>
-                <input asp-for="NumeroDePago" class="form-control" />
+                <input asp-for="NumeroDePago" class="form-control" required/>
                 <span asp-validation-for="NumeroDePago" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="FechaDePago" class="control-label">Fecha de Pago</label>
-                <input asp-for="FechaDePago" class="form-control" />
+                <input asp-for="FechaDePago" class="form-control" required/>
                 <span asp-validation-for="FechaDePago" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdContrato" class="control-label">Direccion</label>
-                <select class="form-select" name="IdContrato">
+                <select class="form-select" name="IdContrato" required>
                     @foreach (var item in ViewBag.Contratos){
                         @:<option @(item.IdContrato==Model.IdContrato ? "selected" : "") value="@item.IdContrato">@(item.Lugar.Direccion)</option>
                     }
@@ -36,7 +42,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Importe" class="control-label"></label>
-                <input asp-for="Importe" type="number" class="form-control" />
+                <input asp-for="Importe" type="number" class="form-control" required/>
                 <span asp-validation-for="Importe" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -1,11 +1,17 @@
 @model proyecto.Models.Inmueble
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Crear Inmueble";
     var listPropietarios = (List<Propietario>)ViewBag.Propietarios;
 }
 
 <h1>Crear Nuevo Inmueble</h1>
+@if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -13,7 +19,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="IdPropietario" class="control-label">Propietario</label>
-                <select class="form-select" name="IdPropietario">
+                <select class="form-select" name="IdPropietario" required>
                     @foreach(var pro in  listPropietarios){
                         <option value="@pro.IdPropietario">@(pro.ToString())</option>
                     }
@@ -22,12 +28,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="CantidadDeAmbientes" class="control-label">Cantidad de Ambientes</label>
-                <input asp-for="CantidadDeAmbientes" class="form-control" />
+                <input asp-for="CantidadDeAmbientes" class="form-control" required/>
                 <span asp-validation-for="CantidadDeAmbientes" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Uso" class="control-label"></label>
-                <select asp-for="Uso" class="form-select">
+                <select asp-for="Uso" class="form-select" required>
                     <option value="comercial">Comercial</option>
                     <option value="residencial">Residencial</option>
                 </select>
@@ -35,12 +41,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control" />
+                <input asp-for="Direccion" class="form-control" required/>
                 <span asp-validation-for="Direccion" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Tipo" class="control-label"></label>
-                <select asp-for="Tipo" class="form-select">
+                <select asp-for="Tipo" class="form-select" required>
                     <option value="local">Local</option>
                     <option value="deposito">Deposito</option>
                     <option value="casa">Casa</option>
@@ -50,28 +56,28 @@
             </div>
             <div class="form-group">
                 <label asp-for="Longitud" class="control-label"></label>
-                <input type="number" asp-for="Longitud" class="form-control" />
+                <input type="number" asp-for="Longitud" class="form-control" required/>
                 <span asp-validation-for="Longitud" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Latitud" class="control-label"></label>
-                <input type="number" asp-for="Latitud" class="form-control" />
+                <input type="number" asp-for="Latitud" class="form-control" required/>
                 <span asp-validation-for="Latitud" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Precio" class="control-label"></label>
-                <input type="number" asp-for="Precio" class="form-control" />
+                <input type="number" asp-for="Precio" class="form-control" required/>
                 <span asp-validation-for="Precio" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Disponible" /> @Html.DisplayNameFor(model => model.Disponible)
+                    <input class="form-check-input" asp-for="Disponible" required/> @Html.DisplayNameFor(model => model.Disponible)
                 </label>
             </div>
             <br>
             <div class="form-group">
                 <input type="submit" value="Crear" class="btn btn-primary" /> |
-                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+                <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
             </div>
         </form>
     </div>
