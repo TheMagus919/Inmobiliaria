@@ -4,10 +4,10 @@
     ViewData["Title"] = "Contratos Vigentes";
 }
 
-<h1>Listado de Contratos Vigentes entre las fechas: @ViewBag.FechaInicio.ToShortDateString() - @ViewBag.FechaFin.ToShortDateString()</h1>
+<h1>Listado de Contratos Vigentes:</h1>
 
 <p>
-    <a asp-action="FormFecha">Volver atras</a>
+    <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
 </p>
 
 <table class="table">
@@ -23,7 +23,10 @@
                 <h3>Inquilino</h3>
             </th>
             <th>
-                <h3>Opciones</h3>
+                <h3>Fecha Inicio</h3>
+            </th>
+            <th>
+                <h3>Fecha Fin</h3>
             </th>
         </tr>
     </thead>
@@ -38,6 +41,12 @@
             </td>                    
             <td>
                 @(item.Vive.Nombre + " " + item.Vive.Apellido) 
+            </td>
+            <td>
+                @(item.FechaDesde.Value.ToShortDateString()) 
+            </td>
+            <td>
+                @(item.FechaHasta.Value.ToShortDateString()) 
             </td>
         </tr>
         }

@@ -186,7 +186,7 @@ public class RepositorioContrato
 			}
 			return c;
 		}
-		public List<Contrato> ContratosVigentes(DateTime FechaDesde, DateTime FechaHasta, int paginaNro = 1, int tamPagina = 10)
+		public List<Contrato> ContratosVigentes( int paginaNro = 1, int tamPagina = 10)
 		{
 			List<Contrato> res = new List<Contrato>();
 			DateTime hoy = DateTime.Today;

@@ -17,10 +17,10 @@
         <form asp-action="ListarPagos">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="IdContrato" class="control-label">Direccion</label>
+                <label asp-for="IdContrato" class="control-label">ID Contrato y Direccion:</label>
                 <select class="form-select" name="IdContrato" required>
                     @foreach(var pro in  listContratos){
-                        <option value="@pro.IdContrato">@(pro.IdContrato)</option>
+                        <option value="@pro.IdContrato">@(pro.IdContrato +" - "+ pro.Lugar.Direccion)</option>
                     }
                 </select>
                 <span asp-validation-for="IdContrato" class="text-danger"></span>

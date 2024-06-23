@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using proyecto.Models;
 
 namespace proyecto.Controllers
@@ -223,43 +224,21 @@ namespace proyecto.Controllers
                 throw;
             }
         }
-
-    // GET: Contratos/FormFecha
+   
+        // GET: Contratos/ContratosVigentes
+        [HttpGet]
         [Authorize]
-        public ActionResult FormFecha()
-        {
-            try
-            {
-                return View();
-            }
-            catch(System.Exception)
-            {
-                throw;
-            }
-        }
-
-        // POST: Contratos/ContratosVigentes
-        [HttpPost]
-        [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult ContratosVigentes(DateTime? FechaDesde, DateTime? FechaHasta)
+        public ActionResult ContratosVigentes()
         {
             try
             {   
-                if(ModelState.IsValid && FechaDesde.HasValue && FechaHasta.HasValue){
-                    if(FechaDesde.Value.Date < FechaHasta.Value.Date){
-                        RepositorioContrato repositorioContrato = new RepositorioContrato();
-                        List<Contrato> contratosVigentes = repositorioContrato.ContratosVigentes(FechaDesde.Value,FechaHasta.Value);
-                        ViewBag.FechaInicio = FechaDesde;
-                        ViewBag.FechaFin = FechaHasta;
-                        return View(contratosVigentes);
-                    }else{
-                        TempData["ErrorMessage"] = "Las Fechas ingresadas son incorrectas. Por favor, corrígelos y envíalos nuevamente.";
-                        return RedirectToAction(nameof(FormFecha));
-                    }
+                if(ModelState.IsValid){
+                    RepositorioContrato repositorioContrato = new RepositorioContrato();
+                    List<Contrato> contratosVigentes = repositorioContrato.ContratosVigentes();
+                    return View(contratosVigentes);
                 }else{
                     TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
-                    return RedirectToAction(nameof(FormFecha));
+                    return RedirectToAction(nameof(Index));
                 }
                 
             }
@@ -268,7 +247,6 @@ namespace proyecto.Controllers
                 throw;
             }
         }
-
 
         // GET: Contratos/FormInmueble
         [Authorize]
