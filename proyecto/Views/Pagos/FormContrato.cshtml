@@ -5,31 +5,37 @@
     var listContratos = (List<Contrato>)ViewBag.Contratos;
 }
 
-<h1>Seleccionar Contrato para ver sus pagos</h1>
+<h4 style="text-align: center;">SELECCIONAR EL CONTRATO PARA VER EL LISTADO DE SUS PAGOS</h4>
 @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
             @TempData["ErrorMessage"]
         </div>
     }
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ListarPagos">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdContrato" class="control-label">ID Contrato y Direccion:</label>
-                <select class="form-select" name="IdContrato" required>
-                    @foreach(var pro in  listContratos){
-                        <option value="@pro.IdContrato">@(pro.IdContrato +" - "+ pro.Lugar.Direccion)</option>
-                    }
-                </select>
-                <span asp-validation-for="IdContrato" class="text-danger"></span>
+<hr />
+<div class="contenedorFormulario">
+    <form asp-action="ListarPagos">
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="IdContrato" class="control-label">ID DEL CONTRATO Y DIRECCION:</label>
+                    <select class="form-select" name="IdContrato" required>
+                        @foreach(var pro in  listContratos){
+                            <option value="@pro.IdContrato">@(pro.IdContrato +" - "+ pro.Lugar.Direccion)</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdContrato" class="text-danger"></span>
+                </div>
             </div>
-            <br>
-            <div class="form-group">
-                <input type="submit" value="Seleccionar" class="btn btn-primary" /> |
-                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+        </div>
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group" style="float: right;">
+                    <input type="submit" value="Seleccionar" class="btn btn-primary" /> |
+                    <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>

@@ -4,7 +4,7 @@
     ViewData["Title"] = "Editar Contrato";
 }
 
-<h1>Editar Contrato</h1>
+<h3 style="text-align: center;">EDITAR CONTRATO N°: @ViewBag.IdContra</h3>
 @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
@@ -12,48 +12,58 @@
         </div>
     }
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdContrato" class="control-label">Id</label>
-                <input asp-for="IdContrato" class="form-control" readonly/>
-                <span asp-validation-for="IdContrato" class="text-danger"></span>
+<div class="contenedorFormulario">
+    <form asp-action="Edit">
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="IdInmueble" class="control-label">INMUEBLE:</label>
+                    <input asp-for="IdInmueble" class="form-control" hidden/>
+                    <input class="form-control" readonly value="@ViewBag.Inmuebles.IdInmueble - @ViewBag.Inmuebles.Direccion"/>
+                    <span asp-validation-for="IdInmueble" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="IdContrato" class="control-label"></label>
+                    <input asp-for="IdContrato" class="form-control"/>
+                    <span asp-validation-for="IdContrato" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="IdInmueble" class="control-label">Direccion</label>
-                <select class="form-select" name="IdInmueble">
-                    @foreach(var item in ViewBag.Inmuebles){
-                        @:<option @(item.IdInmueble==Model.IdInmueble ? "selected" : "") value="@item.IdInmueble">@(item.Direccion)</option>
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group">
+                    <label asp-for="IdInquilino" class="control-label">INQUILINO:</label>
+                    <input asp-for="IdInquilino" class="form-control" hidden/>
+                    <input class="form-control" readonly value="@ViewBag.Inquilinos.Nombre @ViewBag.Inquilinos.Apellido"/>
+                    <span asp-validation-for="IdInquilino" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group">
+                    <label asp-for="FechaDesde" class="control-label">FECHA DESDE:</label>
+                    <input asp-for="FechaDesde" class="form-control"/>
+                    <span asp-validation-for="FechaDesde" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group">
+                    <label asp-for="FechaHasta" class="control-label">FECHA HASTA:</label>
+                    <input asp-for="FechaHasta" class="form-control"/>
+                    <span asp-validation-for="FechaHasta" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group" style="float: right;">
+                    <input type="submit" value="Guardar" class="btn btn-primary" /> |
+                    @{
+                        string returnUrl = (string)ViewBag.ReturnUrl ?? "Index";
                     }
-                </select>
-                <span asp-validation-for="IdInmueble" class="text-danger"></span>
+                    <a href="@Url.Action(returnUrl, "Contratos")" class="btn btn-secondary">Volver atrás</a>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="control-label"> Inquilino</label>
-                <select class="form-select" name="IdInquilino">
-                    @foreach (var item in ViewBag.Inquilinos){
-                        @:<option @(item.IdInquilino==Model.IdInquilino ? "selected" : "") value="@item.IdInquilino">@(item.ToString())</option>
-                    }
-                </select>
-                <span asp-validation-for="IdInquilino" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaDesde" class="control-label">Fecha Desde</label>
-                <input asp-for="FechaDesde" class="form-control"/>
-                <span asp-validation-for="FechaDesde" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FechaHasta" class="control-label">Fecha Hasta</label>
-                <input asp-for="FechaHasta" class="form-control"/>
-                <span asp-validation-for="FechaHasta" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Guardar" class="btn btn-primary" /> |
-                <a class="btn btn-secondary" asp-action="Index">Volver atras</a>
-            </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
-

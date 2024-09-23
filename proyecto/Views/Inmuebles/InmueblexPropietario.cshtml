@@ -2,46 +2,58 @@
 @{
     ViewData["Title"] = "Inmuebles por Propietario";
 }
-
-<h1>Listado de Inmuebles que le pertenecen a @ViewBag.Propietario</h1>
-<a asp-action="SeleccionarPropietario">Volver atras</a>
-<table class="table">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3 style="flex: 1; position: absolute; text-align: center;">Inmuebles que le pertenecen a @ViewBag.Propietario</h3>
+    <div style="margin-left: auto;">
+        <a asp-action="SeleccionarPropietario" class="btn btn-secondary" style="float: right;">Volver atras</a>
+    </div>
+</div>
+<hr />
+<table class="table" id="tabla">
     <thead>
         <tr>
             <th>
-                <h3>Id</h3>
+                <h5>ID</h5>
             </th>
             <th>
-                <h3>Precio</h3>
+                <h5>DIRECCION</h5>
             </th>
             <th>
-                <h3>Direccion</h3>
+                <h5>DISPONIBLE</h5>
             </th>
             <th>
-                <h3>Disponible</h3>
+                <h5>PRECIO</h5>
+            </th>
+            <th>
+                <h5>OPCIONES</h5>
             </th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
             <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdInmueble)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Precio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @if (item.Disponible.ToString() == "True") {
-                    <p>Disponible</p>
+                <td>@Html.DisplayFor(modelItem => item.IdInmueble)</td>
+                <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                <td>@if(item.Disponible.ToString() == "True"){
+                        <p>Disponible</p>
                     }else{
                         <p>No Disponible</p>
                     }
-            </td>
-        </tr>
+                </td>
+                <td>$@Html.DisplayFor(modelItem => item.Precio)</td>
+                @if (User.IsInRole("administrador")){
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.IdInmueble, returnUrl = "InmueblexPropietario", idPropietario = ViewBag.IdPropi})" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id= item.IdInmueble, returnUrl = "InmueblexPropietario", idPropietario = ViewBag.IdPropi})" class="btn btn-secondary">Detalles</a>
+                        <a href="@Url.Action("Delete", new { id= item.IdInmueble, returnUrl = "InmueblexPropietario", idPropietario = ViewBag.IdPropi})" class="btn btn-danger">Eliminar</a>
+                    </td>
+                }else{
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.IdInmueble, returnUrl = "InmueblexPropietario", idPropietario = ViewBag.IdPropi})" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id= item.IdInmueble, returnUrl = "InmueblexPropietario", idPropietario = ViewBag.IdPropi})" class="btn btn-secondary">Detalles</a>
+                    </td>
+                }
+            </tr>
         }
     </tbody>
 </table>

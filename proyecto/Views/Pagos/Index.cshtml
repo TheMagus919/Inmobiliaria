@@ -4,58 +4,42 @@
     ViewData["Title"] = "Pagos";
 }
 
-<h1>Pagos</h1>
+<h2>LISTADO DE PAGOS</h2>
+<hr />
 <div class="opcionesContenedor">
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Crear Nuevo Pago</a>
-    </p>
-    <p>
-        <a asp-action="FormContrato" class="btn btn-primary">Listar todos los Pagos de un Contrato</a>
-    </p>
+    <p><a asp-action="Create" class="btn btn-primary">Crear Nuevo Pago</a></p>
+    <p><a asp-action="FormContrato" class="btn btn-primary">Listar todos los Pagos de un Contrato</a></p>
 </div>
-<table class="table">
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                <h3>Id</h3>
-            </th>
-            <th>
-                <h3>Numero De Pago</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
-            <th>
-                <h3>Opciones</h3>
-            </th>
+            <th>ID</th>
+            <th>DIRECCION</th>
+            <th>NUMERO DE PAGO</th>
+            <th>FECHA</th>
+            <th>OPCIONES</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdPago)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumeroDePago)
-            </td>
-            <td>
-                @(item.contrato.Lugar.Direccion)
-            </td>
-            @if(User.IsInRole("administrador")){
-                <td>
-                    @Html.ActionLink("Editar", "Edit", new {  id=item.IdPago }) |
-                    @Html.ActionLink("Detalles", "Details", new {  id=item.IdPago }) |
-                    @Html.ActionLink("Eliminar", "Delete", new {  id=item.IdPago })
-                </td>
-            }else{
-                <td>
-                    @Html.ActionLink("Editar", "Edit", new {  id=item.IdPago }) |
-                    @Html.ActionLink("Detalles", "Details", new {  id=item.IdPago })
-                </td>
-            }
-            
-        </tr>
-}
+        @foreach (var item in Model) {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdPago)</td>
+                <td>@(item.Contrato.Lugar.Direccion)</td>
+                <td>@Html.DisplayFor(modelItem => item.NumeroDePago)</td>
+                <td>@(item.FechaDePago.ToShortDateString())</td>
+                @if(User.IsInRole("administrador")){
+                    <td>
+                        <a href="@Url.Action("Edit", new {  id=item.IdPago })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new {  id=item.IdPago })" class="btn btn-secondary">Detalles</a>
+                        <a href="@Url.Action("Delete", new {  id=item.IdPago })" class="btn btn-danger">Eliminar</a>
+                    </td>
+                }else{
+                    <td>
+                        <a href="@Url.Action("Edit", new {  id=item.IdPago })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new {  id=item.IdPago })" class="btn btn-secondary">Detalles</a>
+                    </td>
+                }
+            </tr>
+        }
     </tbody>
 </table>

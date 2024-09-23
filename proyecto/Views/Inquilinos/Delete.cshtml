@@ -4,52 +4,30 @@
     ViewData["Title"] = "Eliminar Inquilino";
 }
 
-<h1>Eliminar Inquilino</h1>
-
-<h3>Estas seguro de eliminar el Inquilino?</h3>
-<div>
+<h3 style="text-align: center;">ELIMINAR INQUILINO N°: @ViewBag.IdInqui</h3>
+<hr />
+<p style="text-align: center;">¿Estas seguro de eliminar el Inquilino? Una vez eliminado no podras recuperar la informacion de este inquilino.</p>
+<div class="contenidoDelete">
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Id Inquilino
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdInquilino)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Dni)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Dni)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Telefono)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Telefono)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
+    <dl>
+        <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+        <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Apellido)</dt>
+        <dd>@Html.DisplayFor(model => model.Apellido)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Dni)</dt>
+        <dd>@Html.DisplayFor(model => model.Dni)</dd>
+    </dl>
+    <dl>
+        <dt>@Html.DisplayNameFor(model => model.Telefono)</dt>
+        <dd>@Html.DisplayFor(model => model.Telefono)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd>@Html.DisplayFor(model => model.Email)</dd>
+        <div class="form-group" style="margin-top: 10px; float: right;">
+            <form asp-action="Delete">
+                <input type="button" value="Eliminar" class="btn btn-danger" onclick='eliminar(@ViewBag.IdInqui,this,"Inquilinos")' /> |
+                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+            </form>
+        </div>
     </dl>
     
-    <form asp-action="Delete">
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
-    </form>
 </div>

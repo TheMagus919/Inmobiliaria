@@ -2,78 +2,53 @@
 @{
     ViewData["Title"] = "Inmuebles";
 }
-
-<h1>Inmuebles</h1>
-<div class="opcionesContenedor">
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Crear Nuevo Inmueble</a>
-    </p>
-    <p>
-        <a asp-action="ListaDisponibles" class="btn btn-primary">Listar Inmuebles Disponibles</a>
-    </p>
-    <p>
-        <a asp-action="SeleccionarPropietario" class="btn btn-primary">Listar Inmuebles que pertenecen a un Propietario</a>
-    </p>
+<div class="intro">
+    <h2>LISTADO DE INMUEBLES</h2>
+    <hr />
+    <div class="opcionesContenedor">
+        <p><a asp-action="Create" class="btn btn-primary">Crear Nuevo Inmueble</a></p>
+        <p><a asp-action="ListaDisponibles" class="btn btn-primary">Listar Inmuebles Disponibles</a></p>
+        <p><a asp-action="SeleccionarPropietario" class="btn btn-primary">Listar Inmuebles que pertenecen a un Propietario</a></p>
+    </div>
 </div>
-
-<table class="table">
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                <h3>Id</h3>
-            </th>
-            <th>
-                <h3>Propietario</h3>
-            </th>
-            <th>
-                <h3>Precio</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
-            <th>
-                <h3>Disponible</h3>
-            </th>
-            <th>
-                <h3>Opciones</h3>
-            </th>
+            <th>ID</th>
+            <th>PROPIETARIO</th>
+            <th>DIRECCION</th>
+            <th>DISPONIBLE</th>
+            <th>PRECIO</th>
+            <th>OPCIONES</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
+        @foreach (var item in Model)
+        {
             <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdInmueble)
-            </td>
-            <td>
-                @(item.Duenio.Nombre + " " + item.Duenio.Apellido)              
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Precio)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @if (item.Disponible.ToString() == "True") {
-                    <p>Disponible</p>
+                <td>@Html.DisplayFor(modelItem => item.IdInmueble)</td>
+                <td>@(item.Duenio.Nombre + " " + item.Duenio.Apellido)</td>
+                <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                <td>@if (item.Disponible.ToString() == "True"){
+                        <p>Disponible</p>
                     }else{
                         <p>No Disponible</p>
                     }
-            </td>
-            @if(User.IsInRole("administrador")){
-                <td>
-                @Html.ActionLink("Editar", "Edit", new { id= item.IdInmueble}) |
-                @Html.ActionLink("Detalles", "Details", new { id= item.IdInmueble }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id= item.IdInmueble })
                 </td>
-            }else{
-                <td>
-                @Html.ActionLink("Editar", "Edit", new { id= item.IdInmueble}) |
-                @Html.ActionLink("Detalles", "Details", new { id= item.IdInmueble })
-            </td>
-            }
-        </tr>
+                <td>$@Html.DisplayFor(modelItem => item.Precio)</td>
+                @if (User.IsInRole("administrador")){
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.IdInmueble, returnUrl = "Index"  })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id= item.IdInmueble, returnUrl = "Index" })" class="btn btn-secondary">Detalles</a>
+                        <a href="@Url.Action("Delete", new { id= item.IdInmueble, returnUrl = "Index"  })" class="btn btn-danger">Eliminar</a>
+                    </td>
+                }else{
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.IdInmueble, returnUrl = "Index"  })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id= item.IdInmueble, returnUrl = "Index"  })" class="btn btn-secondary">Detalles</a>
+                    </td>
+                }
+            </tr>
         }
     </tbody>
 </table>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using NuGet.Common;
 using proyecto.Models;
 
@@ -34,7 +35,7 @@ namespace proyecto.Controllers
 
         // GET: Contratos/Details/5
         [Authorize]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string returnUrl = null)
         {
             try
             {   
@@ -46,6 +47,8 @@ namespace proyecto.Controllers
                         ViewBag.Opcion = "Aprobado";
                     }
                 }
+                ViewBag.IdContra = contrato.IdContrato;
+                ViewBag.ReturnUrl = returnUrl ?? "Index";
                 return View(contrato);
             }
             catch(System.Exception)
@@ -84,7 +87,7 @@ namespace proyecto.Controllers
                         List<Contrato> inm = repositorioContrato.ObtenerTodos();
                         foreach (var item in inm){
                             if(item.IdInmueble == contrato.IdInmueble){
-                                if(item.FechaDesde.Value.Date > contrato.FechaHasta.Value.Date || item.FechaHasta.Value.Date > contrato.FechaDesde.Value.Date){
+                                if(item.FechaDesde.Value.Date < contrato.FechaHasta.Value.Date && item.FechaHasta.Value.Date > contrato.FechaDesde.Value.Date){
                                     ModelState.AddModelError("","El Contrato ya esta en uso");
                                     TempData["ErrorMessage"] = "El Inmueble ya posee un contrato en esa fechas.";
                                     return RedirectToAction(nameof(Create));
@@ -120,7 +123,7 @@ namespace proyecto.Controllers
 
         // GET: Contratos/Edit/5
         [Authorize]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, string returnUrl = null)
         {
             try
             {
@@ -128,8 +131,10 @@ namespace proyecto.Controllers
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
                 Contrato contrato = repositorioContrato.ObtenerPorId(id);
-                ViewBag.Inmuebles = repositorioInmueble.ObtenerTodos();
-                ViewBag.Inquilinos = repositorioInquilino.ObtenerTodos();
+                ViewBag.Inmuebles = repositorioInmueble.ObtenerPorId(contrato.IdInmueble);
+                ViewBag.Inquilinos = repositorioInquilino.ObtenerPorId(contrato.IdInquilino);
+                ViewBag.IdContra = contrato.IdContrato;
+                ViewBag.ReturnUrl = returnUrl ?? "Index";
                 return View(contrato);
             }
             catch(System.Exception)
@@ -148,7 +153,7 @@ namespace proyecto.Controllers
             {   RepositorioContrato repositorioContrato = new RepositorioContrato();
                  if(ModelState.IsValid && contrato.FechaDesde.HasValue && contrato.FechaHasta.HasValue){
                     if(contrato.FechaDesde.Value.Date < contrato.FechaHasta.Value.Date){
-                        List<Contrato> inm = repositorioContrato.ObtenerTodos();
+                        List<Contrato> inm = repositorioContrato.ObtenerTodosParaEditar(contrato.IdContrato);
                         foreach (var item in inm){
                             if(item.IdInmueble == contrato.IdInmueble){
                                 if(item.FechaDesde.Value.Date < contrato.FechaHasta.Value.Date && item.FechaHasta.Value.Date > contrato.FechaDesde.Value.Date){
@@ -192,12 +197,14 @@ namespace proyecto.Controllers
 
         // GET: Contratos/Delete/5
         [Authorize(Policy = "administrador")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, string returnUrl = null)
         {
             try
             {
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
                 Contrato contrato = repositorioContrato.ObtenerPorId(id);
+                ViewBag.IdContra = contrato.IdContrato;
+                ViewBag.ReturnUrl = returnUrl ?? "Index";
                 return View(contrato);
             }
             catch(System.Exception)
@@ -209,15 +216,14 @@ namespace proyecto.Controllers
         // POST: Contratos/Delete/5
         [HttpPost]
         [Authorize(Policy = "administrador")]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Contrato contrato)
         {
             try
             {
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
-                TempData["Delete"] = "Eliminada";
                 repositorioContrato.Baja(id);
-                return RedirectToAction(nameof(Index));
+                TempData["Delete"] = true; 
+                return Json(new { success = true });
             }
             catch(System.Exception)
             {
@@ -314,8 +320,10 @@ namespace proyecto.Controllers
             try
             {   if(ModelState.IsValid && FechaDesde.HasValue && FechaHasta.HasValue){
                     if(FechaDesde.Value.Date < FechaHasta.Value.Date){
+                        string formatoFechaInicio = FechaDesde.Value.Date.ToString("yyyy-MM-dd");
+                        string formatoFechaFin = FechaHasta.Value.Date.ToString("yyyy-MM-dd");
                         RepositorioContrato repositorioContrato = new RepositorioContrato();
-                        List<Inmueble> inmuebles = repositorioContrato.InmueblesDisponiblesxFecha(FechaDesde.Value,FechaHasta.Value);
+                        List<Inmueble> inmuebles = repositorioContrato.InmueblesDisponiblesxFecha(formatoFechaInicio ,formatoFechaFin);
                         ViewBag.fechaInicio = FechaDesde.Value.Date;
                         ViewBag.FechaFin = FechaHasta.Value.Date;
                         return View(inmuebles);
@@ -348,6 +356,7 @@ namespace proyecto.Controllers
                 ViewBag.FechaHasta = fecha;
                 ViewBag.Inquilino = repositorioInquilino.ObtenerPorId(contrato.IdInquilino);
                 ViewBag.Inmueble = repositorioInmueble.ObtenerPorId(contrato.IdInmueble);
+                ViewBag.IdContra = contrato.IdContrato;
                 return View(contrato);
             }
             catch(System.Exception)
@@ -358,7 +367,6 @@ namespace proyecto.Controllers
     // POST: Contratos/Renovar/5
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
         public ActionResult Renovar(Contrato contrato)
         {
             try
@@ -368,10 +376,24 @@ namespace proyecto.Controllers
                         List<Contrato> inm = repositorioContrato.ObtenerTodos();
                         foreach (var item in inm){
                             if(item.IdInmueble == contrato.IdInmueble){
-                                if(item.FechaDesde.Value.Date > contrato.FechaHasta.Value.Date){
-                                    ModelState.AddModelError("","El Contrato ya esta en uso");
-                                    TempData["ErrorMessage"] = "El Inmueble ya posee un contrato en esa fechas.";
-                                    return RedirectToAction(nameof(Create));
+                                bool haySuperposicion = (contrato.FechaDesde.Value.Date <= item.FechaHasta.Value.Date && contrato.FechaHasta.Value.Date >= item.FechaDesde.Value.Date);
+                                //bool haySuperposicion = (item.FechaDesde.Value.Date < contrato.FechaHasta.Value.Date && item.FechaHasta.Value.Date > contrato.FechaDesde.Value.Date);
+                                //Console.WriteLine(contrato.FechaDesde.Value.Date+"  "+item.FechaHasta.Value.Date);
+                                //Console.WriteLine(contrato.FechaHasta.Value.Date+"  "+item.FechaDesde.Value.Date);
+                                //Console.WriteLine(contrato.FechaDesde.Value.Date < item.FechaHasta.Value.Date);
+                                //Console.WriteLine(contrato.FechaHasta.Value.Date > item.FechaDesde.Value.Date);
+                                //Console.WriteLine(item.FechaDesde.Value.Date > contrato.FechaHasta.Value.Date);
+                                //Console.WriteLine(item.FechaHasta.Value.Date < contrato.FechaDesde.Value.Date);
+                                if (haySuperposicion) {
+                                    ModelState.AddModelError("", "El Contrato ya está en uso");
+                                    TempData["ErrorMessage"] = "El Inmueble ya posee un contrato en esas fechas.";
+                                    RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
+                                    RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
+                                    DateTime fecha = DateTime.Now;
+                                    ViewBag.FechaHasta = fecha;
+                                    ViewBag.Inquilino = repositorioInquilino.ObtenerPorId(contrato.IdInquilino);
+                                    ViewBag.Inmueble = repositorioInmueble.ObtenerPorId(contrato.IdInmueble);
+                                    return View(contrato);
                                 }
                             }
                         }
@@ -429,13 +451,12 @@ namespace proyecto.Controllers
     // POST: Contratos/CancelarContrato/5
         [HttpPost]
         [Authorize]
-        [ValidateAntiForgeryToken]
-        public ActionResult CancelarContrato(int id)
+        public ActionResult CancelarContrato(int IdContrato)
         {
             try
-            {   
+            {
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
-                Contrato contrato = repositorioContrato.ObtenerPorId(id);
+                Contrato contrato = repositorioContrato.ObtenerPorId(IdContrato);
                 TempData["Cancelado"] = "cancelado";
                 repositorioContrato.Cancelar(contrato);
                 return RedirectToAction(nameof(Index));

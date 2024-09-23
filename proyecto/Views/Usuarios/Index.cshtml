@@ -4,50 +4,32 @@
     ViewData["Title"] = "Usuarios";
 }
 
-<h1>Usuarios</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Crear Nuevo Usuario</a>
-</p>
-<table class="table">
+<h2>LISTADO DE USUARIOS</h2>
+<hr />
+<p><a asp-action="Create" class="btn btn-primary">Crear Usuario</a></p>
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Apellido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>Opciones</th>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>APELLIDO</th>
+            <th>CORREO ELECTRONICO</th>
+            <th>OPCIONES</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdUsuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", new { id=item.IdUsuario }) |
-                @Html.ActionLink("Detalles", "Details", new { id=item.IdUsuario }) |
-                @Html.ActionLink("Eliminar", "Delete", new { id=item.IdUsuario })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model) {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdUsuario)</td>
+                <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+                <td>@Html.DisplayFor(modelItem => item.Apellido)</td>
+                <td>@Html.DisplayFor(modelItem => item.Email)</td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id=item.IdUsuario, returnUrl = "Index"  })" class="btn btn-primary">Editar</a>
+                    <a href="@Url.Action("Details", new { id=item.IdUsuario  })" class="btn btn-secondary">Detalles</a>
+                    <a href="@Url.Action("Delete", new { id=item.IdUsuario  })" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

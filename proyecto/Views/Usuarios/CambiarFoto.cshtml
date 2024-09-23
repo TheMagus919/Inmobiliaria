@@ -4,24 +4,23 @@
     ViewData["Title"] = "Cambiar Avatar";
 }
 
-<h1>Cambiar Imagen del Avatar</h1>
+<h3>CAMBIAR AVATAR</h3>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CambiarFotoo" enctype="multipart/form-data">
-            <h4>Ingrese la nueva Imagen</h4>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group" hidden>
-                <label asp-for="IdUsuario" class="control-label">Id Usuario</label>
+                <label asp-for="IdUsuario" class="control-label">ID USUARIO</label>
                 <input asp-for="IdUsuario" class="form-control"/>
                 <span asp-validation-for="IdUsuario" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AvatarFile" class="control-label">Avatar</label>
+            <div class="form-group" style="margin-top: 10px;">
+                <label asp-for="AvatarFile" class="control-label">AVATAR: </label>
                 <input type="file" name="AvatarFile"/>
                 <span asp-validation-for="AvatarFile" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" style="margin-top: 10px;">
                 <input type="submit" value="Guardar" class="btn btn-primary" /> |
                 <button class="btn btn-secondary" asp-action="Perfil">Volver atras</button>
             </div>

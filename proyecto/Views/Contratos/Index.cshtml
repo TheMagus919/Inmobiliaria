@@ -4,63 +4,42 @@
     ViewData["Title"] = "Contratos";
 }
 
-<h1>Contratos</h1>
+<h2>LISTADO DE CONTRATOS</h2>
+<hr />
 <div class="opcionesContenedor">
-    <p>
-        <a asp-action="Create" class="btn btn-primary">Crear Nuevo Contrato</a>
-    </p>
-    <p>
-        <a asp-action="ContratosVigentes" class="btn btn-primary">Listar Contratos Vigentes</a>
-    </p>
-    <p>
-        <a asp-action="FormInmueble" class="btn btn-primary">Listar Todos los Contratos de un Inmueble</a>
-    </p>
-    <p>
-        <a asp-action="FormRangoFecha" class="btn btn-primary">Listar Todos los Inmuebles desocupados por fecha</a>
-    </p>
+    <p><a asp-action="Create" class="btn btn-primary">Crear Contrato</a></p>
+    <p><a asp-action="ContratosVigentes" class="btn btn-primary">Listar Contratos Vigentes</a></p>
+    <p><a asp-action="FormInmueble" class="btn btn-primary">Listar Contratos de un Inmueble</a></p>
+    <p><a asp-action="FormRangoFecha" class="btn btn-primary">Listar Inmuebles desocupados por fecha</a></p>
 </div>
-<table class="table">
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                <h3>Id</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
-            <th>
-                <h3>Inquilino</h3>
-            </th>
-            <th>
-                <h3>Opciones</h3>
-            </th>
+            <th>ID</th>
+            <th>DIRECCION</th>
+            <th>INQUILINO</th>
+            <th>OPCIONES</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
             <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdContrato)
-            </td>
-            <td>
-                @(item.Lugar.Direccion)           
-            </td>                    
-            <td>
-                @(item.Vive.Nombre + " " + item.Vive.Apellido) 
-            </td>
+                <td>@Html.DisplayFor(modelItem => item.IdContrato)</td>
+                <td>@(item.Lugar.Direccion)</td>                    
+                <td>@(item.Vive.Nombre + " " + item.Vive.Apellido)</td>
                 @if(User.IsInRole("administrador")){
                     <td>
-                        @Html.ActionLink("Editar", "Edit", new { id=item.IdContrato }) |
-                        @Html.ActionLink("Detalles", "Details", new { id=item.IdContrato }) |
-                        @Html.ActionLink("Eliminar", "Delete", new { id=item.IdContrato })
+                        <a href="@Url.Action("Edit", new { id=item.IdContrato, returnUrl = "Index" })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id=item.IdContrato, returnUrl = "Index" })" class="btn btn-secondary">Detalles</a>
+                        <a href="@Url.Action("Delete", new { id=item.IdContrato, returnUrl = "Index" })" class="btn btn-danger">Eliminar</a>
                     </td>
                 }else{
                     <td>
-                        @Html.ActionLink("Editar", "Edit", new { id=item.IdContrato }) |
-                        @Html.ActionLink("Detalles", "Details", new { id=item.IdContrato })
+                        <a href="@Url.Action("Edit", new { id=item.IdContrato, returnUrl = "Index" })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id=item.IdContrato, returnUrl = "Index" })" class="btn btn-secondary">Detalles</a>
                     </td>
                 }
-        </tr>
+            </tr>
         }
     </tbody>
 </table>

@@ -4,53 +4,39 @@
     ViewData["Title"] = "Inquilinos";
 }
 
-<h1>Inquilinos</h1>
-
-<p>
-    <a asp-action="Create" class="btn btn-primary">Crear Nuevo Inquilino</a>
-</p>
-<table class="table">
+<h2>LISTADO DE INQUILINOS</h2>
+<hr />
+<p><a asp-action="Create" class="btn btn-primary">Crear Inquilino</a></p>
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                <h3>Id</h3>
-            </th>
-            <th>
-                <h3>Nombre</h3>
-            </th>
-            <th>
-                <h3>Apellido</h3>
-            </th>
-            <th>
-                <h3>Opciones</h3>
-            </th>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>APELLIDO</th>
+            <th>DNI</th>
+            <th>OPCIONES</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdInquilino)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Apellido)
-            </td>
+            <td>@Html.DisplayFor(modelItem => item.IdInquilino)</td>
+            <td>@Html.DisplayFor(modelItem => item.Nombre)</td>
+            <td>@Html.DisplayFor(modelItem => item.Apellido)</td>
+            <td>@Html.DisplayFor(modelItem => item.Dni)</td>
             @if(User.IsInRole("administrador")){
                 <td>
-                    @Html.ActionLink("Editar", "Edit", new { id=item.IdInquilino }) |
-                    @Html.ActionLink("Detalles", "Details", new { id=item.IdInquilino }) |
-                    @Html.ActionLink("Eliminar", "Delete", new { id=item.IdInquilino })
+                    <a href="@Url.Action("Edit", new { id=item.IdInquilino  })" class="btn btn-primary">Editar</a>
+                    <a href="@Url.Action("Details", new { id=item.IdInquilino })" class="btn btn-secondary">Detalles</a>
+                    <a href="@Url.Action("Delete", new { id=item.IdInquilino })" class="btn btn-danger">Eliminar</a>
                 </td>
             }else{
                 <td>
-                    @Html.ActionLink("Editar", "Edit", new { id=item.IdInquilino }) |
-                    @Html.ActionLink("Detalles", "Details", new { id=item.IdInquilino })
+                    <a href="@Url.Action("Edit", new { id=item.IdInquilino  })" class="btn btn-primary">Editar</a>
+                    <a href="@Url.Action("Details", new { id=item.IdInquilino })" class="btn btn-secondary">Detalles</a>
                 </td>
             }
         </tr>
-}
+        }
     </tbody>
 </table>

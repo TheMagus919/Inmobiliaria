@@ -4,34 +4,34 @@
     ViewData["Title"] = "Contratos";
     var fechaInicio = ViewBag.fechaInicio;
 }
-
-<h1>Listado de inmuebles Desocupados entre las fechas: @ViewBag.fechaInicio.ToShortDateString() - @ViewBag.fechaFin.ToShortDateString()</h1>
-
-<p>
-    <a asp-action="Index">Volver menu Principal</a>
-</p>
-
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h5 style="flex: 1; position: absolute; text-align: center;">LISTADO DE LOS INMUEBLES DESOCUPADOS ENTRE LAS FECHAS: @ViewBag.fechaInicio.ToShortDateString() - @ViewBag.fechaFin.ToShortDateString()</h5>
+    <div style="margin-left: auto;">
+        <a asp-action="Index" class="btn btn-secondary" style="float: right;">Volver menu Principal</a>
+    </div>
+</div>
+<hr />
 <table class="table">
     <thead>
         <tr>
-            <th>
-                <h3>IdInmueble</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
+            <th>ID</th>
+            <th>DIRECCION</th>
+            <th>TIPO</th>
+            <th>USO</th>
+            <th>PRECIO</th>
+            <th>OPCIONES</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdInmueble)
-            </td>
-            <td>
-                @(item.Direccion)           
-            </td>
-        </tr>
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdInmueble)</td>
+                <td>@(item.Direccion)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tipo)</td>
+                <td>@Html.DisplayFor(modelItem => item.Uso)</td>
+                <td>$@Html.DisplayFor(modelItem => item.Precio)</td>
+                <td><a href="/Inmuebles/Details/@Html.DisplayFor(modelItem => item.IdInmueble)" class="btn btn-secondary">Detalles</a></td>
+            </tr>
         }
     </tbody>
 </table>

@@ -1,19 +1,13 @@
 @model proyecto.Models.Usuario
 
 @{
-    ViewData["Title"] = "Crear Usuario";
+    ViewData["Title"] = "Editar Perfil";
 }
 
-<h3 style="text-align: center;">CREAR USUARIO</h3>
-@if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">
-            @TempData["ErrorMessage"]
-        </div>
-    }
+<h3 style="text-align: center;">EDITAR PERFIL</h3>
 <hr />
 <div class="contenedorFormulario">
-    <form asp-action="Create" enctype="multipart/form-data">
+    <form asp-action="Edit">
         <div class="row">
             <div class="col" style="margin-top: 10px;">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -34,22 +28,6 @@
         <div class="row">
             <div class="col" style="margin-top: 10px;">
                 <div class="form-group">
-                    <label asp-for="Email" class="control-label">CORREO ELECTRONICO:</label>
-                    <input asp-for="Email" type="email" class="form-control" required/>
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="col" style="margin-top: 10px;">
-                <div class="form-group">
-                    <label asp-for="Password" class="control-label">CONTRASEÑA:</label>
-                    <input asp-for="Password" type="password" class="form-control" required/>
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col" style="margin-top: 10px;">
-                <div class="form-group">
                     <label asp-for="Rol" class="control-label">ROL:</label>
                     <select asp-for="Rol" class="form-control" required>
                         <option value="administrador">Administrador</option>
@@ -58,19 +36,25 @@
                     <span asp-validation-for="Rol" class="text-danger"></span>
                 </div>
             </div>
-            <div class="col" style="margin-top: 10px;">
-                <div class="form-group">
-                    <label asp-for="AvatarFile" class="control-label">AVATAR: </label>
-                    <input type="file" name="AvatarFile"/>
-                    <span asp-validation-for="AvatarFile" class="text-danger"></span>
+            <div class="col" style="margin-top: 34px;">
+                <div class="form-group" style="width: max-content;">
+                     <a href="@Url.Action("CambiarPassword", new { id= Model.IdUsuario })" class="btn btn-info">Cambiar Contraseña</a>
+                </div>
+            </div>
+            <div class="col" style="margin-top: 34px;">
+                <div class="form-group" style="width: max-content;">
+                    <a href="@Url.Action("CambiarFoto", new { id= Model.IdUsuario })" class="btn btn-info">Cambiar Avatar</a>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col" style="margin-top: 10px;">
                 <div class="form-group" style="float: right;">
-                    <input type="submit" value="Crear" class="btn btn-primary" /> |
-                    <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
+                    <input type="submit" value="Guardar" class="btn btn-primary" /> |
+                    @{
+                        string returnUrl = (string)ViewBag.ReturnUrl ?? "Index";
+                    }
+                    <a href="@Url.Action(returnUrl, "Usuarios")" class="btn btn-secondary">Volver atrás</a>
                 </div>
             </div>
         </div>

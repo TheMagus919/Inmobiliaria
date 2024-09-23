@@ -33,12 +33,15 @@ namespace proyecto.Controllers
 
         // GET: Inmuebles/Details/5
         [Authorize]
-        public ActionResult Details(int id)
+        public ActionResult Details(int id, string returnUrl = null, string idPropietario = null)
         {   
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
                 Inmueble inmuebles = repositorioInmueble.ObtenerPorId(id);
+                ViewBag.IdInmu = inmuebles.IdInmueble;
+                ViewBag.IdPropi = idPropietario;
+                ViewBag.ReturnUrl = returnUrl ?? "Index";
                 return View(inmuebles);
             }
             catch(System.Exception)
@@ -75,18 +78,18 @@ namespace proyecto.Controllers
                         if(item.Direccion == inmueble.Direccion){
                             ModelState.AddModelError("Direccion", "La dirección ya existe");
                             TempData["Error"] = "La dirección ya existe";
-                            return RedirectToAction(nameof(Create));
-                        }else{
-                            repositorioInmueble.Alta(inmueble);
+                            return RedirectToAction(nameof(Index));
                         }
                     }
+                    repositorioInmueble.Alta(inmueble);
                     TempData["Id"] = inmueble.IdInmueble;
                     return RedirectToAction(nameof(Index));
                 }else{
+                    RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+                    ViewBag.Propietarios = repositorioPropietario.ObtenerTodos();
                     TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
                     return View(inmueble);
                 }
-                
             }
             catch(Exception ex)
             {
@@ -96,7 +99,7 @@ namespace proyecto.Controllers
 
         // GET: Inmuebles/Edit/5
         [Authorize]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int id, string returnUrl = null, string idPropietario = null)
         {
             try
             {
@@ -104,6 +107,9 @@ namespace proyecto.Controllers
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                 Inmueble inmuebles = repositorioInmueble.ObtenerPorId(id);
                 ViewBag.Propietarios = repositorioPropietario.ObtenerTodos();
+                ViewBag.ReturnUrl = returnUrl ?? "Index";
+                ViewBag.IdInmu = inmuebles.IdInmueble;
+                ViewBag.IdPropi = idPropietario;
                 return View(inmuebles);
             }
             catch(System.Exception)
@@ -125,6 +131,8 @@ namespace proyecto.Controllers
                     TempData["Edit"] = inmueble.IdInmueble;
                     return RedirectToAction(nameof(Index));
                 }else{
+                    RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
+                    ViewBag.Propietarios = repositorioPropietario.ObtenerTodos();
                     TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
                     return View(inmueble);
                 }
@@ -137,12 +145,15 @@ namespace proyecto.Controllers
 
         // GET: Inmuebles/Delete/5
         [Authorize(Policy = "administrador")]
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int id, string returnUrl = null, string idPropietario = null)
         {
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
                 Inmueble inmuebles = repositorioInmueble.ObtenerPorId(id);
+                ViewBag.ReturnUrl = returnUrl ?? "Index";
+                ViewBag.IdInmu = inmuebles.IdInmueble;
+                ViewBag.IdPropi = idPropietario;
                 return View(inmuebles);
             }
             catch(System.Exception)
@@ -154,15 +165,14 @@ namespace proyecto.Controllers
         // POST: Inmuebles/Delete/5
         [HttpPost]
         [Authorize(Policy = "administrador")]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Inmueble inmueble)
         {
             try
             {
                 RepositorioInmueble repositorioInmueble = new RepositorioInmueble();
-                TempData["Delete"] = "Eliminada";
                 repositorioInmueble.Baja(id);
-                return RedirectToAction(nameof(Index));
+                TempData["Delete"] = true;
+                return Json(new { success = true });
             }
             catch(System.Exception)
             {
@@ -205,7 +215,6 @@ namespace proyecto.Controllers
         // POST: Inmuebles/InmueblexPropietario/5
         [Authorize]
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult InmueblexPropietario(string IdPropietario)
         {   
             try
@@ -215,8 +224,10 @@ namespace proyecto.Controllers
                     RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                     int id = int.Parse(IdPropietario);
                     ViewBag.Propietario  = repositorioPropietario.ObtenerPorId(id);
+                    ViewBag.IdPropi = id;
                     List<Inmueble> inmuebles = repositorioInmueble.ObtenerListaInmueblesXPropietario(IdPropietario);
                     return View(inmuebles);
+                    
                 }else{
                     TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
                     return RedirectToAction(nameof(SeleccionarPropietario));

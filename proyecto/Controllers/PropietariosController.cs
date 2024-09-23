@@ -40,6 +40,7 @@ namespace proyecto.Controllers
             {
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                 Propietario propietario = repositorioPropietario.ObtenerPorId(id);
+                ViewBag.IdPropi = propietario.IdPropietario;
                 return View(propietario);
             }
             catch(System.Exception)
@@ -81,6 +82,7 @@ namespace proyecto.Controllers
                     return RedirectToAction(nameof(Index));
                 }else{
                     TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
+                    ViewBag.Propietarios = new RepositorioPropietario().ObtenerTodos();
                     return View(propietario);
                 }
             }
@@ -97,6 +99,7 @@ namespace proyecto.Controllers
             {
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                 Propietario propietario = repositorioPropietario.ObtenerPorId(id);
+                ViewBag.IdPropi = propietario.IdPropietario;
                 return View(propietario);
             }
             catch(System.Exception)
@@ -116,12 +119,12 @@ namespace proyecto.Controllers
             {   
                 if(ModelState.IsValid){
                     RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
-                    List<Propietario> rep = repositorioPropietario.ObtenerTodos();
+                    List<Propietario> rep = repositorioPropietario.ObtenerTodosParaEditar(propietario.IdPropietario);
                         foreach(var asd in rep){
-                            if(asd.Dni == propietario.Dni && asd.IdPropietario != propietario.IdPropietario){
+                            if(asd.Dni == propietario.Dni){
                                 ModelState.AddModelError("", "El DNI ya esta en uso");
                                 return View(propietario);
-                            }else if(asd.Email == propietario.Email && asd.IdPropietario != propietario.IdPropietario){
+                            }else if(asd.Email == propietario.Email){
                                 ModelState.AddModelError("", "El Email ya esta en uso");
                                 return View(propietario);
                             }
@@ -149,6 +152,7 @@ namespace proyecto.Controllers
             {
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
                 Propietario propietario = repositorioPropietario.ObtenerPorId(id);
+                ViewBag.IdPropi = propietario.IdPropietario;
                 return View(propietario);
             }
             catch(System.Exception)
@@ -161,15 +165,14 @@ namespace proyecto.Controllers
         // POST: Propietarios/Delete/5
         [HttpPost]
         [Authorize(Policy = "administrador")]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Propietario propietario)
         {
             try
             {
                 RepositorioPropietario repositorioPropietario = new RepositorioPropietario();
-                TempData["Delete"] = "Eliminada";
                 repositorioPropietario.Baja(id);
-                return RedirectToAction(nameof(Index));
+                TempData["Delete"] = true;
+                return Json(new { success = true });
             }
             catch(System.Exception)
             {

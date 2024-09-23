@@ -4,57 +4,33 @@
     ViewData["Title"] = "Detalles Usuario";
 }
 
-<h1>Detalles del Usuario</h1>
-
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Id
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdUsuario)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Apellido)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Avatar)
-        </dt>
-        <dd class = "col-sm-10">
+<h3 style="text-align: center;">DETALLES DEL USUARIO N°: @ViewBag.IdUs</h3>
+<hr />
+<div class="contenedorDetalles">
+    <dl>
+        <dt>@Html.DisplayNameFor(model => model.Nombre)</dt>
+        <dd>@Html.DisplayFor(model => model.Nombre)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Apellido)</dt>
+        <dd> @Html.DisplayFor(model => model.Apellido)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Email)</dt>
+        <dd>@Html.DisplayFor(model => model.Email)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Rol)</dt>
+        <dd>@Html.DisplayFor(model => model.Rol)</dd>
+    </dl>
+    <dl>
+        <dt>@Html.DisplayNameFor(model => model.Avatar)</dt>
+        <dd>
             @if(!String.IsNullOrEmpty(Model.Avatar)){
                 <img width="150" src="@Model.Avatar">
             }else{
                 <img width="150" src="https://localhost:7183/Uploads/sinfoto.jpg">
             }
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Rol)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Rol)
-        </dd>
+        <div class="form-group" style="margin-top: 10px; float: right;">
+            <form action='/Usuarios/Edit/@Model.IdUsuario'>
+                <button type="submit" class="btn btn-primary">Editar</button> |
+                <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
+            </form>
+        </div>
     </dl>
 </div>
-<div class="form-group">
-    <form action='/Usuarios/Edit/@Model.IdUsuario'>
-        <button type="submit" class="btn btn-primary">Editar</button> |
-        <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
-    </form>
-</div>
-

@@ -1,0 +1,78 @@
+@model proyecto.Models.Usuario
+
+@{
+    ViewData["Title"] = "Perfil";
+}
+
+<div class="contenedorPerfil" style="margin-top: 20px; margin-left: 290px; margin-right: 290px; background-color: rgb(65, 104, 155); padding: 25px; border-radius: 10px;">
+    <div class="informacionPerfil">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="container">
+            <div class="row align-items-start">
+                <div class="col">
+                    <div class="row align-items-start" style="margin-top: 10px;">
+                        <div class="col">
+                            <label asp-for="IdUsuario" class="control-label">ID:</label>
+                            <input asp-for="IdUsuario" class="form-control" readonly/>
+                            <span asp-validation-for="IdUsuario" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row align-items-start" style="margin-top: 10px;">
+                        <div class="col form-group">
+                            <label asp-for="Nombre" class="control-label">NOMBRE:</label>
+                            <input asp-for="Nombre" class="form-control" readonly/>
+                            <span asp-validation-for="Nombre" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row align-items-start" style="margin-top: 10px;">
+                        <div class="col form-group">
+                            <label asp-for="Apellido" class="control-label">APELLIDO:</label>
+                            <input asp-for="Apellido" class="form-control" readonly/>
+                            <span asp-validation-for="Apellido" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row align-items-start" style="margin-top: 10px;">
+                        <div class="col form-group">
+                            <label asp-for="Email" class="control-label">CORREO ELECTRONICO:</label>
+                            <input asp-for="Email" class="form-control" readonly/>
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row align-items-start" style="margin-top: 10px;">
+                        <div class="col form-group">
+                            <label asp-for="Rol" class="control-label">ROL:</label>
+                            <input asp-for="Rol" class="form-control" readonly/>
+                            <span asp-validation-for="Rol" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row align-items-start" style="margin-top: 15px;">
+                        <div class="col form-group">
+                            <img src="@(ViewBag.Avatar)" alt="..." height="200px" width="200px">
+                        </div>
+                    </div>
+                    <div class="row align-items-start" style="margin-top: 10px;">
+                        <div class="col form-group">
+                            <a class="btn btn-light" href="@Url.Action("CambiarFoto", new { id= Model.IdUsuario })">Cambiar Avatar</a>
+                        </div>
+                    </div>
+                    <div class="row align-items-start" style="margin-top: 10px;">
+                        <div class="col form-group">
+                            <a class="btn btn-light" href="@Url.Action("CambiarPassword", new { id= Model.IdUsuario })">Cambiar Contraseña</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="margin-top: 10px;">
+                @if(User.IsInRole("administrador")){
+                    <a class="btn btn-success" href='@Url.Action("EditarPerfil", new { id= Model.IdUsuario, returnUrl = "Perfil" })'>Editar Perfil</a>
+                    <a class="btn btn-secondary" asp-action="Index">Volver atras</a>
+                }else{
+                    <a class="btn btn-success" href='@Url.Action("EditarPerfil", new { id= Model.IdUsuario, returnUrl = "Perfil" })'>Editar Perfil</a> 
+                    <button class="btn btn-secondary"><a href="https://localhost:7183/" style="text-decoration: none; color:white;">Volver atras</a></button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

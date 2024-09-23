@@ -36,6 +36,7 @@ namespace proyecto.Controllers
             try{
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
                 Inquilino inquilinos = repositorioInquilino.ObtenerPorId(id);
+                ViewBag.IdInqui = inquilinos.IdInquilino;
                 return View(inquilinos);
 
             }catch(System.Exception){
@@ -93,6 +94,7 @@ namespace proyecto.Controllers
             {
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
                 Inquilino inquilino = repositorioInquilino.ObtenerPorId(id);
+                ViewBag.IdInqui = inquilino.IdInquilino;
                 return View(inquilino);
 
             }
@@ -112,12 +114,12 @@ namespace proyecto.Controllers
             {   
                 if (ModelState.IsValid){
                     RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
-                    List<Inquilino> rep = repositorioInquilino.ObtenerTodos();
+                    List<Inquilino> rep = repositorioInquilino.ObtenerTodosParaEditar(inquilino.IdInquilino);
                         foreach(var asd in rep){
-                            if(asd.Dni == inquilino.Dni && asd.IdInquilino != inquilino.IdInquilino){
+                            if(asd.Dni == inquilino.Dni){
                                 ModelState.AddModelError("", "El DNI ya esta en uso");
                                 return View(inquilino);
-                            }else if(asd.Email == inquilino.Email && asd.IdInquilino != inquilino.IdInquilino){
+                            }else if(asd.Email == inquilino.Email){
                                 ModelState.AddModelError("", "El Email ya esta en uso");
                                 return View(inquilino);
                             }
@@ -145,6 +147,7 @@ namespace proyecto.Controllers
             {
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
                 Inquilino inquilino = repositorioInquilino.ObtenerPorId(id);
+                ViewBag.IdInqui = inquilino.IdInquilino;
                 return View(inquilino);
 
             }
@@ -158,15 +161,14 @@ namespace proyecto.Controllers
         // POST: Inquilinos/Delete/5
         [HttpPost]
         [Authorize(Policy = "administrador")]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Inquilino inquilino)
         {
             try
             {
                 RepositorioInquilino repositorioInquilino = new RepositorioInquilino();
-                TempData["Delete"] = "Eliminada";
                 repositorioInquilino.Baja(id);
-                return RedirectToAction(nameof(Index));
+                TempData["Delete"] = true;
+                return Json(new { success = true });
 
             }
             catch(System.Exception)

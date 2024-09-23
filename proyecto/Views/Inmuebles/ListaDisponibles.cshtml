@@ -3,35 +3,30 @@
     ViewData["Title"] = "Inmuebles Disponibles";
 }
 
-<h1>Lista de inmuebles Disponibles y sus Dueños</h1>
-<a asp-action="Index" class="btn btn-secondary">Volver atras</a>
-<table class="table">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3 style="flex: 1; position: absolute; text-align: center;">LISTA DE INMUEBLES DISPONIBLES Y SUS DUEÑOS</h3>
+    <div style="margin-left: auto;">
+        <a asp-action="Index" class="btn btn-secondary" style="float: right;">Volver atras</a>
+    </div>
+</div>
+<hr />
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                <h3>IdInmueble</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
-            <th>
-                <h3>Dueño</h3>
-            </th>
+            <th>DUEÑO</th>
+            <th>DIRECCION</th>
+            <th>TIPO</th>
+            <th>USO</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
             <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdInmueble)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @(item.Duenio.Nombre + " " + item.Duenio.Apellido)              
-            </td>
-        </tr>
+                <td>@(item.Duenio.Nombre + " " + item.Duenio.Apellido)</td>
+                <td>@Html.DisplayFor(modelItem => item.Direccion)</td>
+                <td>@Html.DisplayFor(modelItem => item.Tipo)</td>
+                <td>@Html.DisplayFor(modelItem => item.Uso)</td>
+            </tr>
         }
     </tbody>
 </table>

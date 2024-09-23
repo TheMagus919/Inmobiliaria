@@ -2,15 +2,17 @@
     ViewData["Title"] = "Cancelacion de contrato";
 }
 
-<h1>Estas seguro de cancelar el Contrato ID:@ViewBag.Contrato.IdContrato</h1>
-
-<div>
-    <hr />
-    <h4>Al cancelarlo se le aplicara una multa de: $@ViewBag.Multa</h4>
+<h4 style="text-align: center;">¿ESTAS SEGURO DE CANCELAR EL CONTRATO N°: @ViewBag.Contrato.IdContrato?</h4>
+<hr />
+<div style="text-align: center;">
+    <h5>Al cancelarlo se le aplicara una multa de: $@ViewBag.Multa</h5>
 </div>
 <div class="form-group opciones">
-        <form action='/Contratos/CancelarContrato/@ViewBag.Contrato.IdContrato' method="post">
-            <button type="submit" class="btn btn-success">Si</button> |
-            <button class="btn btn-danger" asp-action="Index">No</button>
-        </form>
+    <form action='/Contratos/CancelarContrato/@ViewBag.Contrato.IdContrato' method="post">
+        <div hidden>
+            <input name="IdContrato" value="@ViewBag.Contrato.IdContrato" />
+        </div>
+        <button type="submit" class="btn btn-success">Si</button> |
+        <button class="btn btn-danger" asp-action="Index">No</button>
+    </form>
 </div>

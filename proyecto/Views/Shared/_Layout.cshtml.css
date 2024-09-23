@@ -11,6 +11,12 @@ a {
   color: #0077cc;
 }
 
+
+.contenido{
+  margin-left: 60px;
+  margin-right: 60px;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
@@ -44,5 +50,5 @@ button.accept-policy {
   bottom: 0;
   width: 100%;
   white-space: nowrap;
-  line-height: 60px;
+  line-height: 50px;
 }

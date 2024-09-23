@@ -100,8 +100,9 @@ namespace proyecto.Controllers
 		{   
 			try{
                 RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
-				var e = repositorioUsuario.ObtenerPorId(id);
-				return View(e);
+				var u = repositorioUsuario.ObtenerPorId(id);
+				ViewBag.IdUs = u.IdUsuario;
+				return View(u);
 
             }catch(System.Exception){
                 throw;
@@ -164,7 +165,7 @@ namespace proyecto.Controllers
 			}
 		}
 
-		// GET: Usuarios/Edit/5
+		// GET: Usuarios/Perfil/5
 		[Authorize]
 		public ActionResult Perfil()
 		{
@@ -173,7 +174,63 @@ namespace proyecto.Controllers
 			var u = repositorioUsuario.ObtenerPorEmail(User.Identity.Name);
 			ViewBag.Roles = roles;
 			ViewBag.Avatar = u.Avatar;
-			return View("Edit", u);
+			ViewBag.IdUs = u.IdUsuario;
+			return View("Perfil", u);
+		}
+
+		// GET: Usuarios/EditarPerfil/5
+		[Authorize]
+		public ActionResult EditarPerfil(int id, string returnUrl = null)
+		{
+			ViewData["Title"] = "Editar usuario";
+            RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
+			var u = repositorioUsuario.ObtenerPorId(id);
+			ViewBag.Roles = roles;
+			ViewBag.Avatar = u.Avatar;
+			ViewBag.IdUs = u.IdUsuario;
+			ViewBag.ReturnUrl = returnUrl ?? "Index";
+			return View(u);
+		}
+
+		// POST: Usuarios/Edit/5
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize]
+		public ActionResult EditarPerfil(int id, Usuario u)
+		{
+			var vista = nameof(Edit);
+			Usuario? us = null;
+			try
+			{
+				if (!User.IsInRole("administrador"))
+				{
+					vista = nameof(Perfil);
+                    RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
+					var usuarioActual = repositorioUsuario.ObtenerPorEmail(User.Identity.Name);
+					usuarioActual.Apellido = u.Apellido;
+					usuarioActual.Nombre = u.Nombre;
+					usuarioActual.Email = u.Email;
+					usuarioActual.Rol = u.Rol;
+					repositorioUsuario.Modificacion(usuarioActual);
+				}else{
+					RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
+					var usuarioActual = repositorioUsuario.ObtenerPorId(id);
+					usuarioActual.Apellido = u.Apellido;
+					usuarioActual.Nombre = u.Nombre;
+					usuarioActual.Email = u.Email;
+					usuarioActual.Rol = u.Rol;
+					repositorioUsuario.Modificacion(usuarioActual);
+				}
+				ViewBag.Id = u.IdUsuario;
+				if(User.IsInRole("administrador")){
+					return RedirectToAction(nameof(Index));
+				}else{
+					return RedirectToAction(nameof(Perfil));
+				}
+			}
+			catch (Exception ex){
+				throw;
+			}
 		}
 
 		[Authorize]
@@ -233,7 +290,6 @@ namespace proyecto.Controllers
 			Usuario us = repositorioUsuario.ObtenerPorId(u.IdUsuario);
 			if (AvatarFile != null && us.IdUsuario> 0)
 				{
-					Console.WriteLine("ENTRO:"+ us.IdUsuario);
 					string wwwPath = environment.WebRootPath;
 					string path = Path.Combine(wwwPath, "Uploads");
 					if (!Directory.Exists(path))
@@ -260,20 +316,22 @@ namespace proyecto.Controllers
 
 		// GET: Usuarios/Edit/5
 		[Authorize(Policy = "administrador")]
-		public ActionResult Edit(int id)
+		public ActionResult Edit(int id, string returnUrl = null)
 		{
 			ViewData["Title"] = "Editar usuario";
             RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
 			var u = repositorioUsuario.ObtenerPorId(id);
 			ViewBag.Roles = roles;
 			ViewBag.Avatar = u.Avatar;
+			ViewBag.IdUs = u.IdUsuario;
+			ViewBag.ReturnUrl = returnUrl ?? "Index";
 			return View(u);
 		}
 
 		// POST: Usuarios/Edit/5
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		[Authorize]
+		[Authorize(Policy = "administrador")]
 		public ActionResult Edit(int id, Usuario u)
 		{
 			var vista = nameof(Edit);
@@ -317,12 +375,12 @@ namespace proyecto.Controllers
 		{
 			RepositorioUsuario repositorioUsuario = new RepositorioUsuario();
 			Usuario us = repositorioUsuario.ObtenerPorId(id);
+			ViewBag.IdUs = us.IdUsuario;
 			return View(us);
 		}
 
 		// POST: Usuarios/Delete/5
 		[HttpPost]
-		[ValidateAntiForgeryToken]
 		[Authorize(Policy = "administrador")]
 		public ActionResult Delete(int id, Usuario usuario)
 		{
@@ -333,7 +391,8 @@ namespace proyecto.Controllers
 				var ruta = Path.Combine(environment.WebRootPath, "Uploads", $"avatar_{id}" + Path.GetExtension(usuario.Avatar));
 				if (System.IO.File.Exists(ruta))
 					System.IO.File.Delete(ruta);
-				return RedirectToAction(nameof(Index));
+				TempData["Delete"] = true;
+				return Json(new { success = true });
 			}
 			catch
 			{

@@ -29,6 +29,7 @@ namespace proyecto.Controllers
             {
                 RepositorioPago repositorioPago = new RepositorioPago();
                 Pago pago = repositorioPago.ObtenerPorId(id);
+                ViewBag.IdPag = pago.IdPago;
                 return View(pago);
             }
             catch(System.Exception)
@@ -60,9 +61,16 @@ namespace proyecto.Controllers
             {   
                 if (ModelState.IsValid){
                     RepositorioPago repositorioPago = new RepositorioPago();
-                    repositorioPago.Alta(pago);
-                    TempData["Id"] = pago.IdPago;
-                    return RedirectToAction(nameof(Index));
+                    RepositorioContrato repositorioContrato = new RepositorioContrato();
+                    Contrato contrato = repositorioContrato.ObtenerPorId(pago.IdContrato);
+                    if(contrato == null){
+                        TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
+                        return View(pago);
+                    }else{
+                        repositorioPago.Alta(pago);
+                        TempData["Id"] = pago.IdPago;
+                        return RedirectToAction(nameof(Index));
+                    }
                 }else{
                     TempData["ErrorMessage"] = "Hay errores en el formulario. Por favor, corrígelos y envíalos nuevamente.";
                     return View(pago);
@@ -85,6 +93,7 @@ namespace proyecto.Controllers
                 RepositorioContrato repositorioContrato = new RepositorioContrato();
                 Pago pago = repositorioPago.ObtenerPorId(id);
                 ViewBag.Contratos = repositorioContrato.ObtenerTodos();
+                ViewBag.IdPag = pago.IdPago;
                 return View(pago);
             }
             catch(System.Exception)
@@ -126,6 +135,7 @@ namespace proyecto.Controllers
             {
                 RepositorioPago repositorioPago = new RepositorioPago();
                 Pago pago = repositorioPago.ObtenerPorId(id);
+                ViewBag.IdPag = pago.IdPago;
                 return View(pago);
             }
             catch(System.Exception)
@@ -137,15 +147,14 @@ namespace proyecto.Controllers
         // POST: Pagos/Delete/5
         [HttpPost]
         [Authorize(Policy = "administrador")]
-        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Pago pago)
         {
             try
             {
                 RepositorioPago repositorioPago = new RepositorioPago();
-                TempData["Delete"] = "Eliminada";
                 repositorioPago.Baja(id);
-                return RedirectToAction(nameof(Index));
+                TempData["Delete"] = true;
+                return Json(new { success = true });
             }
             catch(System.Exception)
             {
@@ -200,7 +209,8 @@ namespace proyecto.Controllers
         {
             try{
             RepositorioContrato repositorioContrato = new RepositorioContrato();
-            ViewBag.Contrato = repositorioContrato.ObtenerPorId(id);
+            Contrato contrato = repositorioContrato.ObtenerPorId(id);
+            ViewBag.IdContra = id;
             return View();
         }
         catch(System.Exception)

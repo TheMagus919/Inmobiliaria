@@ -24,6 +24,6 @@ public class Pago{
     public decimal Importe { get; set;}
     
     [ForeignKey(nameof(IdContrato))]
-    public Contrato? contrato { get; set;}
+    public Contrato? Contrato { get; set;}
 }
 }

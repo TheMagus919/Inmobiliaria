@@ -36,7 +36,6 @@ public class Inmueble{
     public decimal Latitud { get; set;}
 
     [Required(ErrorMessage = "El campo Precio es obligatorio")]
-    [RegularExpression(@"^\-?\d{6,9}$", ErrorMessage = "Debe tener entre 6 y 9 digitos, puede comenzar con -")]
     public decimal Precio { get; set;}
 
     [Required(ErrorMessage = "El campo Disponible es obligatorio")]

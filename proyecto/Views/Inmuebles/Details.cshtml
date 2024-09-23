@@ -4,80 +4,49 @@
     ViewData["Title"] = "Detalles Inmueble";
 }
 
-<h1>Detalles Del Inmueble</h1>
-
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Id
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdInmueble)
-        </dd>
-        <dt class = "col-sm-2">
-            <p>Propietario</p>
-        </dt>
-        <dd class = "col-sm-10">
-            @(Model.Duenio.Nombre + " " + Model.Duenio.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            Cantidad de Ambientes
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CantidadDeAmbientes)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Uso)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Uso)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Direccion)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Direccion)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tipo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tipo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Longitud)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Longitud)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Latitud)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Latitud)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Disponible)
-        </dt>
-        <dd class = "col-sm-10">
-                @if (Model.Disponible.ToString() == "True") {
-                    <p>Disponible</p>
-                    }else{
-                        <p>No Disponible</p>
-                    }
-        </dd>
+<h3 style="text-align: center;">DETALLES DEL INMUEBLE N°: @ViewBag.IdInmu</h3>
+<hr />
+<div class="contenedorDetalles">
+    <dl>
+        <dt>Propietario</dt>
+        <dd>@(Model.Duenio.Nombre + " " + Model.Duenio.Apellido)</dd>
+        <dt>Cantidad de Ambientes</dt>
+        <dd>@Html.DisplayFor(model => model.CantidadDeAmbientes)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Uso)</dt>
+        <dd>@Html.DisplayFor(model => model.Uso)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Direccion)</dt>
+        <dd>@Html.DisplayFor(model => model.Direccion)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Tipo)</dt>
+        <dd>@Html.DisplayFor(model => model.Tipo)</dd>
     </dl>
-</div>
-<div class="form-group">
-    <form action='/Inmuebles/Edit/@Model.IdInmueble'>
-        <button type="submit" class="btn btn-primary">Editar</button> |
-        <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
-    </form>
+    <dl>
+        <dt>@Html.DisplayNameFor(model => model.Longitud)</dt>
+        <dd>@Html.DisplayFor(model => model.Longitud)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Latitud)</dt>
+        <dd>@Html.DisplayFor(model => model.Latitud)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Precio)</dt>
+        <dd>$@Html.DisplayFor(model => model.Precio)</dd>
+        <dt>@Html.DisplayNameFor(model => model.Disponible)</dt>
+        <dd>
+            @if (Model.Disponible.ToString() == "True") {
+                <p>Disponible</p>
+            }else{
+                <p>No Disponible</p>
+            }
+        </dd>
+        <div class="form-group" style="float: right;">
+            @{
+                string returnUrl = (string)ViewBag.ReturnUrl ?? "Index";
+                string idPropietario = (string)ViewBag.IdPropi ?? "0";
+            }
+            @if(returnUrl == "InmueblexPropietario"){
+                <form action="/Inmuebles/InmueblexPropietario" method="POST">
+                    <input type="hidden" name="IdPropietario" value="@idPropietario"></input>
+                    <input type="submit" value="Volver atras" class="btn btn-secondary" />
+                </form>
+            }else{
+                <a href="@Url.Action(returnUrl, "Inmuebles")" class="btn btn-secondary">Volver atrás</a>
+            }
+        </div>
+    </dl>
 </div>

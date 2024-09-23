@@ -115,6 +115,46 @@ public class RepositorioContrato
 			return res;
 		}
 
+		public List<Contrato> ObtenerTodosParaEditar(int id)
+		{
+			List<Contrato> res = new List<Contrato>();
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = @"SELECT 
+					IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, Cancelado, inq.Nombre, inq.Apellido, inm.Direccion
+					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble
+					WHERE IdContrato != @id";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Contrato c = new Contrato
+						{
+							IdContrato = reader.GetInt32(nameof(Contrato.IdContrato)),
+                            IdInmueble = reader.GetInt32("IdInmueble"),
+                            IdInquilino = reader.GetInt32("IdInquilino"),
+                            FechaDesde = reader.GetDateTime("FechaDesde"),
+                            FechaHasta = reader.GetDateTime("FechaHasta"),
+							Cancelado = reader.GetBoolean("Cancelado"),
+							Vive = new Inquilino{
+								Nombre = reader.GetString("Nombre"),
+								Apellido = reader.GetString("Apellido"),
+							},
+							Lugar = new Inmueble{
+								Direccion = reader.GetString("Direccion"),
+							},
+						};
+						res.Add(c);
+					}
+					connection.Close();
+				}
+			}
+			return res;
+		}
 		public List<Contrato> ObtenerLista(int paginaNro = 1, int tamPagina = 10)
 		{
 			List<Contrato> res = new List<Contrato>();
@@ -153,8 +193,8 @@ public class RepositorioContrato
 			Contrato c = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, Cancelado, inq.Nombre, inq.Apellido, inm.Direccion
-					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble
+				string sql = @"SELECT IdContrato, c.IdInmueble, c.IdInquilino, FechaDesde, FechaHasta, Cancelado, inq.Nombre, inq.Apellido, inm.Direccion, pro.Nombre as NombreD, pro.Apellido as ApellidoD
+					FROM contratos c INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble INNER JOIN propietarios pro ON inm.IdPropietario = pro.IdPropietario
 					WHERE IdContrato=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -173,6 +213,10 @@ public class RepositorioContrato
                             FechaHasta = reader.GetDateTime("FechaHasta"),
 							Cancelado = reader.GetBoolean("Cancelado"),
 							Lugar = new Inmueble{
+								Duenio = new Propietario{
+									Nombre = reader.GetString("NombreD"),
+									Apellido = reader.GetString("ApellidoD"),
+								},
 								Direccion = reader.GetString("Direccion"),
 							},
 							Vive = new Inquilino{
@@ -271,7 +315,7 @@ public class RepositorioContrato
 			return res;
 		}
 
-		public List<Inmueble> InmueblesDisponiblesxFecha(DateTime fechaInicio, DateTime fechaFin, int paginaNro = 1, int tamPagina = 10)
+		public List<Inmueble> InmueblesDisponiblesxFecha(string fechaInicio, string fechaFin, int paginaNro = 1, int tamPagina = 10)
 		{
 			List<Inmueble> res = new List<Inmueble>();
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
@@ -282,7 +326,8 @@ public class RepositorioContrato
 					WHERE i.IdInmueble NOT IN(
 						SELECT c.IdInmueble
 						FROM Contratos c
-						WHERE (c.FechaDesde >= @FechaInicio AND c.FechaHasta <= @FechaFin OR c.Cancelado = 0)
+						WHERE c.Cancelado = false
+						AND (c.FechaDesde <= @FechaFin AND c.FechaHasta >= @FechaInicio)
 					)
 				";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))

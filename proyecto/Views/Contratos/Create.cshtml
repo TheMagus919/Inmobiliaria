@@ -6,7 +6,7 @@
         var listInmuebles = (List<Inmueble>)ViewBag.Inmuebles;
 }
 
-<h1>Crear Nuevo Contrato</h1>
+<h3 style="text-align: center;">CREAR CONTRATO</h3>
 @if (TempData["ErrorMessage"] != null)
     {
         <div class="alert alert-danger">
@@ -14,43 +14,56 @@
         </div>
     }
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdInmueble" class="control-label">Direccion</label>
-                <select class="form-select" name="IdInmueble" required>
-                    @foreach(var pro in listInmuebles){
-                        <option value="@pro.IdInmueble">@(pro.Direccion)</option>
-                    }
-                </select>
-                <span asp-validation-for="IdInmueble" class="text-danger"></span>
+<div class="contenedorFormulario">
+    <form asp-action="Create">
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="IdInmueble" class="control-label">ID Y DIRECCION:</label>
+                    <select class="form-select" name="IdInmueble" required>
+                        @foreach(var pro in listInmuebles){
+                            <option value="@pro.IdInmueble">@(pro.IdInmueble + " - " + pro.Direccion)</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdInmueble" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="IdInquilino" class="control-label">Inquilino</label>
-                <select class="form-select" name="IdInquilino" required>
-                    @foreach(var pro in listInquilinos){
-                        <option value="@pro.IdInquilino">@(pro.ToString())</option>
-                    }
-                </select>
-                <span asp-validation-for="IdInquilino" class="text-danger"></span>
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group">
+                    <label asp-for="IdInquilino" class="control-label">INQUILINO:</label>
+                    <select class="form-select" name="IdInquilino" required>
+                        @foreach(var pro in listInquilinos){
+                            <option value="@pro.IdInquilino">@(pro.ToString())</option>
+                        }
+                    </select>
+                    <span asp-validation-for="IdInquilino" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FechaDesde" class="control-label">Fecha Desde</label>
-                <input asp-for="FechaDesde" class="form-control" required/>
-                <span asp-validation-for="FechaDesde" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group">
+                    <label asp-for="FechaDesde" class="control-label">FECHA DESDE:</label>
+                    <input asp-for="FechaDesde" class="form-control" required/>
+                    <span asp-validation-for="FechaDesde" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="FechaHasta" class="control-label">Fecha Hasta</label>
-                <input asp-for="FechaHasta" class="form-control" required/>
-                <span asp-validation-for="FechaHasta" class="text-danger"></span>
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group">
+                    <label asp-for="FechaHasta" class="control-label">FECHA HASTA:</label>
+                    <input asp-for="FechaHasta" class="form-control" required/>
+                    <span asp-validation-for="FechaHasta" class="text-danger"></span>
+                </div>
             </div>
-            <br>
-            <div class="form-group">
-                <input type="submit" value="Crear" class="btn btn-primary" /> |
-                <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
+        </div>
+        <div class="row">
+            <div class="col" style="margin-top: 10px;">
+                <div class="form-group" style="float: right;">
+                    <input type="submit" value="Crear" class="btn btn-primary" /> |
+                    <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>

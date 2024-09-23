@@ -4,54 +4,36 @@
     ViewData["Title"] = "Detalles de Contrato";
 }
 
-<h1>Detalles del Contrato</h1>
-
-<div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            Id
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdContrato)
-        </dd>
-        <dt class = "col-sm-2">
-            Direccion
-        </dt>
-        <dd class = "col-sm-10">
-            @(Model.Lugar.Direccion)
-        </dd>
-        <dt class = "col-sm-2">
-            Inquilino
-        </dt>
-        <dd class = "col-sm-10">
-            @(Model.Vive.Nombre + " " + Model.Vive.Apellido)
-        </dd>
-        <dt class = "col-sm-2">
-            Fecha Desde
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaDesde)
-        </dd>
-        <dt class = "col-sm-2">
-            Fecha Hasta
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaHasta)
-        </dd>
+<h3 style="text-align: center;">DETALLES DEL CONTRATO N°: @ViewBag.IdContra</h3>
+<hr />
+<div class="contenedorDetalles">
+    <dl>
+        <dt>Direccion</dt>
+        <dd>@(Model.Lugar.Direccion)</dd>
+        <dt>Inquilino</dt>
+        <dd>@(Model.Vive.Nombre + " " + Model.Vive.Apellido)</dd>
     </dl>
-</div>
-<div class="form-group opciones">
-        <form action='/Contratos/Edit/@Model.IdContrato'>
-            <button type="submit" class="btn btn-primary">Editar</button> |
-            <button class="btn btn-secondary" asp-action="Index">Volver atras</button>
-        </form>
-    @if(ViewBag.Opcion == "Aprobado"){
-        <form action='/Contratos/Renovar/@Model.IdContrato'>
-            <button type="submit" class="btn btn-success">Renovar</button>
-        </form>
-        <form action='/Contratos/Cancelar/@Model.IdContrato' method="GET">
-            <button type="submit" class="btn btn-danger">Cancelar Contrato</button>
-        </form>
-    }
+    <dl>
+        <dt>Fecha Desde</dt>
+        <dd>@(Model.FechaDesde.Value.ToShortDateString())</dd>
+        <dt>Fecha Hasta</dt>
+        <dd>@(Model.FechaHasta.Value.ToShortDateString())</dd>
+        <div class="form-group opciones" style="width: max-content; float: right;">
+            <form action='/Contratos/Edit/@Model.IdContrato'>
+                <button type="submit" class="btn btn-primary">Editar</button> |
+                @{
+                    string returnUrl = (string)ViewBag.ReturnUrl ?? "Index";
+                }
+                <a href="@Url.Action(returnUrl, "Contratos")" class="btn btn-secondary">Volver atrás</a>
+            </form>
+        @if(ViewBag.Opcion == "Aprobado"){
+            <form action='/Contratos/Renovar/@Model.IdContrato'>
+                <button type="submit" class="btn btn-success">Renovar</button>
+            </form>
+            <form action='/Contratos/Cancelar/@Model.IdContrato' method="GET">
+                <button type="submit" class="btn btn-danger">Cancelar Contrato</button>
+            </form>
+        }
+        </div>
+    </dl>
 </div>

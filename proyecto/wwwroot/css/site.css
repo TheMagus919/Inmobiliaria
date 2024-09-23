@@ -17,10 +17,46 @@ body {
   margin-bottom: 60px;
 }
 
-.opciones{
-  display: flex;
-  flex-wrap: wrap;
+a, td, p, label, dd{
+  font-family: Inter, sans-serif;
 }
+
+h1, h2, h3, h4, h5, th, dt{
+  font-family: Roboto Slab, serif;
+}
+
+.contenedorFormulario{
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
+.contenedorDetalles{
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly; 
+  align-items: flex-start;
+}
+
+.contenidoDelete{
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-evenly; 
+  align-items: flex-start;
+}
+
+.opciones{
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+}
+
 
 .opciones button{
   margin-left: 5px;
@@ -32,4 +68,8 @@ body {
 }
 .opcionesContenedor p{
   margin-left: 5px;
+}
+
+.contenedorPerfil{
+  color: #fcfcfc;
 }

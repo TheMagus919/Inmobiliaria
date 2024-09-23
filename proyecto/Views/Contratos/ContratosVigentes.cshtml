@@ -4,51 +4,45 @@
     ViewData["Title"] = "Contratos Vigentes";
 }
 
-<h1>Listado de Contratos Vigentes:</h1>
-
-<p>
-    <a asp-action="Index" class="btn btn-secondary">Volver atras</a>
-</p>
-
-<table class="table">
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3 style="flex: 1; position: absolute; text-align: center;">LISTADO DE CONTRATOS VIGENTES:</h3>
+    <div style="margin-left: auto;">
+        <a asp-action="Index" class="btn btn-secondary" style="float: right;">Volver atras</a>
+    </div>
+</div>
+<hr />
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                <h3>Id</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
-            <th>
-                <h3>Inquilino</h3>
-            </th>
-            <th>
-                <h3>Fecha Inicio</h3>
-            </th>
-            <th>
-                <h3>Fecha Fin</h3>
-            </th>
+            <th>ID</th>
+            <th>DIRECCION</th>
+            <th>INQUILINO</th>
+            <th>FECHA INICIO</th>
+            <th>FECHA FIN</th>
+            <th>OPCIONES</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdContrato)
-            </td>
-            <td>
-                @(item.Lugar.Direccion)           
-            </td>                    
-            <td>
-                @(item.Vive.Nombre + " " + item.Vive.Apellido) 
-            </td>
-            <td>
-                @(item.FechaDesde.Value.ToShortDateString()) 
-            </td>
-            <td>
-                @(item.FechaHasta.Value.ToShortDateString()) 
-            </td>
-        </tr>
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdContrato)</td>
+                <td>@(item.Lugar.Direccion)</td>                    
+                <td>@(item.Vive.Nombre + " " + item.Vive.Apellido)</td>
+                <td>@(item.FechaDesde.Value.ToShortDateString())</td>
+                <td>@(item.FechaHasta.Value.ToShortDateString())</td>
+                @if(User.IsInRole("administrador")){
+                    <td>
+                        <a href="@Url.Action("Edit", new { id=item.IdContrato, returnUrl = "ContratosVigentes" })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id=item.IdContrato, returnUrl = "ContratosVigentes" })" class="btn btn-secondary">Detalles</a>
+                        <a href="@Url.Action("Delete", new { id=item.IdContrato, returnUrl = "ContratosVigentes" })" class="btn btn-danger">Eliminar</a>
+                    </td>
+                }else{
+                    <td>
+                        <a href="@Url.Action("Edit", new { id=item.IdContrato, returnUrl = "ContratosVigentes" })" class="btn btn-primary">Editar</a>
+                        <a href="@Url.Action("Details", new { id=item.IdContrato, returnUrl = "ContratosVigentes" })" class="btn btn-secondary">Detalles</a>
+                    </td>
+                }
+            </tr>
         }
     </tbody>
 </table>

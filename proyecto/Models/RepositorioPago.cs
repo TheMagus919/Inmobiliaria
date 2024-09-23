@@ -96,7 +96,7 @@ public class RepositorioPago
                             FechaDePago = reader.GetDateTime("FechaDePago"),
                             Importe = reader.GetDecimal("Importe"),
                             IdContrato = reader.GetInt32("IdContrato"),
-							contrato = new Contrato{
+							Contrato = new Contrato{
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),
@@ -137,7 +137,7 @@ public class RepositorioPago
                             FechaDePago = reader.GetDateTime("FechaDePago"),
                             Importe = reader.GetDecimal("Importe"),
                             IdContrato = reader.GetInt32("IdContrato"),
-							contrato = new Contrato{
+							Contrato = new Contrato{
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),
@@ -156,8 +156,8 @@ public class RepositorioPago
 			Pago p = null;
 			using (MySqlConnection connection = new MySqlConnection(connectionString))
 			{
-				string sql = @"SELECT IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inm.Direccion
-					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble
+				string sql = @"SELECT IdPago, NumeroDePago, FechaDePago, Importe, p.IdContrato, c.IdInquilino, c.IdInmueble, inm.Direccion, inq.Nombre, inq.Apellido
+					FROM pagos p INNER JOIN contratos c ON p.IdContrato = c.IdContrato INNER JOIN inmuebles inm ON c.IdInmueble = inm.IdInmueble INNER JOIN inquilinos inq ON c.IdInquilino = inq.IdInquilino
 					WHERE IdPago=@id";
 				using (MySqlCommand command = new MySqlCommand(sql, connection))
 				{
@@ -174,12 +174,16 @@ public class RepositorioPago
                             FechaDePago = reader.GetDateTime("FechaDePago"),
                             Importe = reader.GetDecimal("Importe"),
                             IdContrato = reader.GetInt32("IdContrato"),
-							contrato = new Contrato{
+							Contrato = new Contrato{
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),
 								Lugar = new Inmueble{
 									Direccion = reader.GetString("Direccion"),
+								},
+								Vive = new Inquilino{
+									Nombre = reader.GetString("Nombre"),
+									Apellido = reader.GetString("Apellido"),
 								}
 							}
 						};
@@ -214,7 +218,7 @@ public class RepositorioPago
                             FechaDePago = reader.GetDateTime("FechaDePago"),
                             Importe = reader.GetDecimal("Importe"),
                             IdContrato = reader.GetInt32("IdContrato"),
-							contrato = new Contrato{
+							Contrato = new Contrato{
                                 IdContrato = reader.GetInt32("IdContrato"),
 								IdInquilino = reader.GetInt32("IdInquilino"),
 								IdInmueble = reader.GetInt32("IdInmueble"),

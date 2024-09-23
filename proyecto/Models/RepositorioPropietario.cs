@@ -108,6 +108,40 @@ public class RepositorioPropietario
 			return res;
 		}
 
+		public List<Propietario> ObtenerTodosParaEditar(int id)
+		{
+			List<Propietario> res = new List<Propietario>();
+			using (MySqlConnection connection = new MySqlConnection(connectionString))
+			{
+				string sql = @"SELECT 
+					IdPropietario, Nombre, Apellido, Dni, Telefono, Email
+					FROM propietarios
+					WHERE IdPropietario != @id";
+				using (MySqlCommand command = new MySqlCommand(sql, connection))
+				{
+					command.Parameters.Add("@id", MySqlDbType.Int32).Value = id;
+					command.CommandType = CommandType.Text;
+					connection.Open();
+					var reader = command.ExecuteReader();
+					while (reader.Read())
+					{
+						Propietario p = new Propietario
+						{
+							IdPropietario = reader.GetInt32(nameof(Propietario.IdPropietario)),
+							Nombre = reader.GetString("Nombre"),
+							Apellido = reader.GetString("Apellido"),
+							Dni = reader.GetString("Dni"),
+							Telefono = reader.GetString("Telefono"),
+							Email = reader.GetString("Email"),
+						};
+						res.Add(p);
+					}
+					connection.Close();
+				}
+			}
+			return res;
+		}
+
 		public List<Propietario> ObtenerLista(int paginaNro = 1, int tamPagina = 10)
 		{
 			List<Propietario> res = new List<Propietario>();

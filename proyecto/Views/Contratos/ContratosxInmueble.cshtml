@@ -3,40 +3,33 @@
 @{
     ViewData["Title"] = "Contratos por Inmueble";
 }
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3 style="flex: 1; position: absolute; text-align: center;">LISTADO DE CONTRATOS QUE PERTENECEN AL INMUEBLE N°:@ViewBag.IdInmueble</h3>
+    <div style="margin-left: auto;">
+        <a asp-action="Index" class="btn btn-secondary" style="float: right;">Volver atras</a>
+    </div>
+</div>
+<hr />
 
-<h1>Listado de Contratos que pertenecen al inmueble ID:@ViewBag.IdInmueble</h1>
-
-<p>
-    <a asp-action="FormInmueble" class="btn btn-secondary">Volver atras</a>
-</p>
-
-<table class="table">
+<table class="table" id="tabla">
     <thead>
         <tr>
-            <th>
-                <h3>Id</h3>
-            </th>
-            <th>
-                <h3>Direccion</h3>
-            </th>
-            <th>
-                <h3>Inquilino</h3>
-            </th>
+            <th>ID</th>
+            <th>DIRECCION</th>
+            <th>INQUILINO</th>
+            <th>FECHA DESDE</th>
+            <th>FECHA HASTA</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdContrato)
-            </td>
-            <td>
-                @(item.Lugar.Direccion)           
-            </td>                    
-            <td>
-                @(item.Vive.Nombre + " " + item.Vive.Apellido) 
-            </td>
-        </tr>
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.IdContrato)</td>
+                <td>@(item.Lugar.Direccion)</td>                    
+                <td>@(item.Vive.Nombre + " " + item.Vive.Apellido)</td>
+                <td>@(item.FechaDesde.Value.ToShortDateString())</td>
+                <td>@(item.FechaHasta.Value.ToShortDateString())</td>
+            </tr>
         }
     </tbody>
 </table>
